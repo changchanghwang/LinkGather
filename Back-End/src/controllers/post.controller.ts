@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as moment from 'moment';
 import { getRepository } from 'typeorm';
+import { Dib } from '../entity/dib.entity';
 import { Like } from '../entity/like.entity';
 import { Post } from '../entity/post.entity';
 import { crawling } from '../utils/crawling';
@@ -112,6 +113,24 @@ class postController {
       } else {
         await getRepository(Like).save({ post: Number(id), user });
         res.status(200).json({ success: true, msg: '좋아요 성공' });
+      }
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  //찜하기
+  public dib = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const user = res.locals.user;
+      const dibExist = await Dib.findByUserAndId(user, Number(id));
+      if (dibExist) {
+        await Dib.deleteOne(Number(id));
+        res.status(200).json({ success: true, msg: '찜하기 취소' });
+      } else {
+        await getRepository(Dib).save({ post: Number(id), user });
+        res.status(200).json({ success: true, msg: '찜하기 성공' });
       }
     } catch (err) {
       next(err);

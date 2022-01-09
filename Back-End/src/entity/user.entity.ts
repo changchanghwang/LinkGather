@@ -5,6 +5,7 @@ import {
   Column,
   OneToMany,
 } from 'typeorm';
+import { Dib } from './dib.entity';
 import { Like } from './like.entity';
 import { Post } from './post.entity';
 
@@ -39,6 +40,12 @@ export class User extends BaseEntity {
     onDelete: 'CASCADE',
   })
   likes: Like[];
+
+  @OneToMany((type) => Dib, (dibs) => dibs.user, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  dibs: Dib[];
 
   static findOneByEmail(email: string) {
     return this.createQueryBuilder('users')
