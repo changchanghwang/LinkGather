@@ -1,7 +1,8 @@
 # Hanghae99 Team2 Toy project#1 (Linkgather)
 
 - 주소: [linkgather.shop](https://www.linkgather.shop)
-  ![screenshot](./static/img/test1.PNG)
+  
+![linkgather](https://user-images.githubusercontent.com/86486778/148679216-0d895bca-7499-4c67-9a80-93e295d7650c.png)
 
 ## 개요
 

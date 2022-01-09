@@ -46,7 +46,7 @@ class postController {
         let image = await crawling(url);
         if (!image) {
           image =
-            'https://user-images.githubusercontent.com/86486778/148642786-552a0da0-06e2-4a19-bf5c-17a28e184ded.png';
+            'https://user-images.githubusercontent.com/86486778/148679216-0d895bca-7499-4c67-9a80-93e295d7650c.png';
         }
         await Post.updateOne(url, title, desc, image, Number(id));
         return res.status(200).json({ success: true });
@@ -92,7 +92,7 @@ class postController {
       let image = await crawling(url);
       if (!image) {
         image =
-          'https://user-images.githubusercontent.com/86486778/148642786-552a0da0-06e2-4a19-bf5c-17a28e184ded.png';
+          'https://user-images.githubusercontent.com/86486778/148679216-0d895bca-7499-4c67-9a80-93e295d7650c.png';
       }
       res.status(200).json({ image });
     } catch (err) {
