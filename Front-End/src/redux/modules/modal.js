@@ -4,7 +4,9 @@
 // const LOAD = 'my-app/widgets/LOAD';
 const SIGNUP = 'modal/SIGNUP';
 
-const initialState = false;
+const initialState = {
+  isOpen: false,
+};
 
 // Action Creators
 // export function loadWidgets() {
@@ -22,10 +24,10 @@ export default function reducer(state = initialState, action = {}) {
     // signup modal
     case 'modal/SIGNUP': {
       console.log('리듀서 동작. 값변경');
-      state = !state;
-      return state;
+      const isOpen = !action.isOpen;
+      return { isOpen };
     }
     default:
-      return state;
+      return { isOpen: state.isOpen };
   }
 }

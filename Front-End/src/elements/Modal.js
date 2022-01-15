@@ -1,9 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { signupModal } from '../redux/modules/modal';
 
 const ModalBackground = (props) => {
+  const dispatch = useDispatch();
+  const open = useSelector((state) => state.modal.isOpen);
+  const handleModal = (e) => {
+    if (e.target.id === 'Back') {
+      dispatch(signupModal(open));
+    }
+  };
   return (
-    <GrayBackground>
+    <GrayBackground id="Back" onClick={handleModal}>
       <PopUpWrap>{props.children}</PopUpWrap>
     </GrayBackground>
   );
