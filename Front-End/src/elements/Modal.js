@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const ModalBackground = (props) => {
@@ -10,7 +10,6 @@ const ModalBackground = (props) => {
 };
 
 const GrayBackground = styled.div`
-  display: block;
   position: fixed;
   top: 0;
   right: 0;

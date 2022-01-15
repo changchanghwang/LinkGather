@@ -1,24 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Logo from '../elements/Logo';
 import SearchInput from '../elements/SearchInput';
 import SignUpModal from './SignUp';
 
 const Header = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const handleModal = () => {
-    setIsOpen(!isOpen);
-  };
   return (
     <Head>
       <Container>
         <Logo />
         <SearchInput />
-        <div style={{ color: 'yellow' }} onClick={handleModal}>
-          회원가입
-        </div>
+        <SignUpModal />
       </Container>
-      <SignUpModal isOpen={isOpen} />
     </Head>
   );
 };
