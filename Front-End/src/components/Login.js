@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import Button from '../elements/button';
-import Input from '../elements/Input';
 import Title from '../elements/Title';
 import styled from 'styled-components';
+import Input from '../elements/Input';
+import Button from '../elements/button';
 
-const SignUpModal = (props) => {
+const LoginModal = (props) => {
   const [open, setOpen] = useState(false);
-  const handleSignUpModal = (e) => {
+  const handleLoginModal = (e) => {
     if (e.target.className.includes('handleModal')) {
       setOpen(!open);
     }
@@ -15,28 +15,22 @@ const SignUpModal = (props) => {
     <>
       <div
         className="handleModal"
-        style={{ color: '#fff' }}
-        onClick={handleSignUpModal}
+        style={{ color: '#fff', marginLeft: '40px' }}
+        onClick={handleLoginModal}
       >
-        회원가입
+        로그인
       </div>
       {open ? (
-        <GrayBackground className="handleModal" onClick={handleSignUpModal}>
+        <GrayBackground className="handleModal" onClick={handleLoginModal}>
           <PopUpWrap>
-            <Title text={'회원가입'} />
-            <Close className="handleModal" onClick={handleSignUpModal}>
+            <Title text={'로그인'} />
+            <Close className="handleModal" onClick={handleLoginModal}>
               닫기
             </Close>
             <>
-              <Input label={'이름'} text={'홍길동'} />
               <Input label={'이메일'} text={'example@example.com'} />
               <Input label={'패스워드'} text={'********'} isPassword={true} />
-              <Input
-                label={'패스워드 확인'}
-                text={'********'}
-                isPassword={true}
-              />
-              <Button isFill={false}>회원가입</Button>
+              <Button isFill={false}>로그인</Button>
             </>
           </PopUpWrap>
         </GrayBackground>
@@ -77,4 +71,4 @@ const Close = styled.button`
   cursor: pointer;
 `;
 
-export default SignUpModal;
+export default LoginModal;

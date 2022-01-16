@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import Button from '../elements/button';
-import Input from '../elements/Input';
 import Title from '../elements/Title';
 import styled from 'styled-components';
+import Input from '../elements/Input';
+import Button from '../elements/button';
+import PreviewButton from '../elements/PreviewButton';
 
-const SignUpModal = (props) => {
+const PostModal = (props) => {
   const [open, setOpen] = useState(false);
-  const handleSignUpModal = (e) => {
+  const handlePostModal = (e) => {
     if (e.target.className.includes('handleModal')) {
       setOpen(!open);
     }
@@ -15,28 +16,32 @@ const SignUpModal = (props) => {
     <>
       <div
         className="handleModal"
-        style={{ color: '#fff' }}
-        onClick={handleSignUpModal}
+        style={{ height: '70px', display: 'flex', alignItems: 'center' }}
+        onClick={handlePostModal}
       >
-        회원가입
+        등록
       </div>
       {open ? (
-        <GrayBackground className="handleModal" onClick={handleSignUpModal}>
+        <GrayBackground className="handleModal" onClick={handlePostModal}>
           <PopUpWrap>
-            <Title text={'회원가입'} />
-            <Close className="handleModal" onClick={handleSignUpModal}>
+            <Title text={'등록하기'} />
+            <Close className="handleModal" onClick={handlePostModal}>
               닫기
             </Close>
             <>
-              <Input label={'이름'} text={'홍길동'} />
-              <Input label={'이메일'} text={'example@example.com'} />
-              <Input label={'패스워드'} text={'********'} isPassword={true} />
+              <div style={{ display: 'flex' }}>
+                <Input
+                  label={'웹 사이트 URL'}
+                  text={'https://www.linkgather.com'}
+                  isPreview={true}
+                />
+              </div>
+              <Input label={'제목'} text={'제목을 입력해주세요'} />
               <Input
-                label={'패스워드 확인'}
-                text={'********'}
-                isPassword={true}
+                label={'설명'}
+                text={'사이트에 대한 간략한 설명을 입력해주세요'}
               />
-              <Button isFill={false}>회원가입</Button>
+              <Button isFill={false}>등록하기</Button>
             </>
           </PopUpWrap>
         </GrayBackground>
@@ -77,4 +82,4 @@ const Close = styled.button`
   cursor: pointer;
 `;
 
-export default SignUpModal;
+export default PostModal;

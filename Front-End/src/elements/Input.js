@@ -2,11 +2,21 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Input = (props) => {
-  const { label, text, isPassword } = props;
+  const { label, text, isPassword, isPreview } = props;
   return (
     <div style={{ marginBottom: '20px' }}>
-      <Label>{label}</Label>
-      <InputEl type={isPassword ? 'password' : 'text'} placeholder={text} />
+      {isPreview ? (
+        <>
+          <Label>{label}</Label>
+          <PreviewInput placeholder={text} />
+          <Preview>이미지 미리보기</Preview>
+        </>
+      ) : (
+        <>
+          <Label>{label}</Label>
+          <InputEl type={isPassword ? 'password' : 'text'} placeholder={text} />
+        </>
+      )}
     </div>
   );
 };
@@ -23,7 +33,23 @@ const InputEl = styled.input`
   padding: 15px 10px;
   border: 1px solid #dee2e6;
   border-radius: 3px;
-  width: 100%;
+  width: 350px;
+`;
+
+const PreviewInput = styled.input`
+  padding: 15px 10px;
+  border: 1px solid #dee2e6;
+  border-radius: 3px 0px 0px 3px;
+  width: 198px;
+`;
+const Preview = styled.button`
+  width: 150px;
+  padding: 15px 10px;
+  color: #fff;
+  background: #000;
+  border: 0;
+  border-radius: 0px 3px 3px 0px;
+  cursor: pointer;
 `;
 
 export default Input;

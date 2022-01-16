@@ -7,7 +7,7 @@ const SearchInput = (props) => (
 
 const Search = styled.input`
   width: 260px;
-  height: 40px;
+  height: 34px;
   padding-left: 20px;
   outline: none;
   border-radius: 22px;
