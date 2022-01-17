@@ -15,7 +15,7 @@ const SignUpModal = (props) => {
     <>
       <div
         className="handleModal"
-        style={{ color: '#fff' }}
+        style={{ color: '#fff', cursor: 'pointer' }}
         onClick={handleSignUpModal}
       >
         회원가입

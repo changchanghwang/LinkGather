@@ -15,7 +15,7 @@ const LoginModal = (props) => {
     <>
       <div
         className="handleModal"
-        style={{ color: '#fff', marginLeft: '40px' }}
+        style={{ color: '#fff', marginLeft: '40px', cursor: 'pointer' }}
         onClick={handleLoginModal}
       >
         로그인

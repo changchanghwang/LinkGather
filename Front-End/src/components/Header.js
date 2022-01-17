@@ -25,6 +25,7 @@ const Header = (props) => {
             <span
               style={{
                 fontSize: '12px',
+                cursor: 'pointer',
               }}
             >
               최신순
@@ -33,6 +34,7 @@ const Header = (props) => {
             <span
               style={{
                 fontSize: '12px',
+                cursor: 'pointer',
               }}
             >
               추천순

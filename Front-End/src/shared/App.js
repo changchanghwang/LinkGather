@@ -1,11 +1,11 @@
 import { Route, Switch } from 'react-router-dom';
-import Header from '../components/Header';
+import Main from '../pages/Main';
 
 function App() {
   return (
     <>
       <Switch>
-        <Route exact path="/" component={Header} />
+        <Route exact path="/" component={Main} />
       </Switch>
     </>
   );

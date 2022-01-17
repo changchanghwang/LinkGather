@@ -3,7 +3,6 @@ import Title from '../elements/Title';
 import styled from 'styled-components';
 import Input from '../elements/Input';
 import Button from '../elements/button';
-import PreviewButton from '../elements/PreviewButton';
 
 const PostModal = (props) => {
   const [open, setOpen] = useState(false);
@@ -16,7 +15,12 @@ const PostModal = (props) => {
     <>
       <div
         className="handleModal"
-        style={{ height: '70px', display: 'flex', alignItems: 'center' }}
+        style={{
+          height: '60px',
+          display: 'flex',
+          alignItems: 'center',
+          cursor: 'pointer',
+        }}
         onClick={handlePostModal}
       >
         등록
