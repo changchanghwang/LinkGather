@@ -14,7 +14,11 @@ const Input = (props) => {
       ) : (
         <>
           <Label>{label}</Label>
-          <InputEl type={isPassword ? 'password' : 'text'} placeholder={text} />
+          <InputEl
+            type={isPassword ? 'password' : 'text'}
+            placeholder={text}
+            ref={text}
+          />
         </>
       )}
     </div>
