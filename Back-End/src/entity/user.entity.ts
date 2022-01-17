@@ -1,16 +1,10 @@
-import {
-  Entity,
-  BaseEntity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Dib } from './dib.entity';
 import { Like } from './like.entity';
 import { Post } from './post.entity';
 
 @Entity('users')
-export class User extends BaseEntity {
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -46,15 +40,4 @@ export class User extends BaseEntity {
     onDelete: 'CASCADE',
   })
   dibs: Dib[];
-
-  static findOneByEmail(email: string) {
-    return this.createQueryBuilder('users')
-      .where('users.email=:email', { email })
-      .getOne();
-  }
-  static findOneById(id: string) {
-    return this.createQueryBuilder('users')
-      .where('users.id=:id', { id })
-      .getOne();
-  }
 }

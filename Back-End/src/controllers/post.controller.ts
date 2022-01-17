@@ -1,10 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import * as moment from 'moment';
-import { getRepository } from 'typeorm';
+import { getCustomRepository, getRepository } from 'typeorm';
 import { Dib } from '../entity/dib.entity';
-import { Like } from '../entity/like.entity';
-import { Post } from '../entity/post.entity';
+import { PostRepository } from '../entity/repository/post.repository';
+import { LikeRepository } from '../entity/repository/like.repository';
+import { DibRepository } from '../entity/repository/dib.repository';
 import { crawling } from '../utils/crawling';
+const postRepository = getCustomRepository(PostRepository);
+const likeRepository = getCustomRepository(LikeRepository);
+const dibRepository = getCustomRepository(DibRepository);
 
 class postController {
   //게시글 작성
@@ -15,21 +19,14 @@ class postController {
   ) => {
     try {
       const { url, title, desc }: postInput = req.body;
-      const user = res.locals.user;
+      const user: number = res.locals.user;
       let image = await crawling(url);
       if (!image) {
         image =
           'https://user-images.githubusercontent.com/86486778/148642786-552a0da0-06e2-4a19-bf5c-17a28e184ded.png';
       }
       const uploadTime = moment().format('YYYY-MM-DD');
-      await getRepository(Post).save({
-        url,
-        title,
-        desc,
-        user,
-        image,
-        uploadTime,
-      });
+      await postRepository.save(url, title, desc, user, image, uploadTime);
       res.status(200).json({ success: true });
     } catch (err) {
       next(err);
@@ -42,14 +39,14 @@ class postController {
       const { id } = req.params;
       const { url, title, desc } = req.body;
       const user = res.locals.user;
-      const post = await Post.findByUserAndId(user, Number(id));
+      const post = await postRepository.findByUserAndId(user, Number(id));
       if (post) {
         let image = await crawling(url);
         if (!image) {
           image =
             'https://user-images.githubusercontent.com/86486778/148679216-0d895bca-7499-4c67-9a80-93e295d7650c.png';
         }
-        await Post.updateOne(url, title, desc, image, Number(id));
+        await postRepository.updateOne(url, title, desc, image, Number(id));
         return res.status(200).json({ success: true });
       }
       return res
@@ -69,9 +66,9 @@ class postController {
     try {
       const { id } = req.params;
       const user = res.locals.user;
-      const post = await Post.findByUserAndId(user, Number(id));
+      const post = await postRepository.findByUserAndId(user, Number(id));
       if (post) {
-        await Post.deleteOne(Number(id));
+        await postRepository.deleteOne(Number(id));
         return res.status(200).json({ success: true });
       }
       return res
@@ -106,12 +103,16 @@ class postController {
     try {
       const { id } = req.params;
       const user = res.locals.user;
-      const likeExist = await Like.findByUserAndId(user, Number(id));
+      const likeExist = await likeRepository.findByUserAndPostId(
+        user,
+        Number(id)
+      );
       if (likeExist) {
-        await Like.deleteOne(Number(id));
+        const likeId = likeExist.id;
+        await likeRepository.deleteOne(likeId);
         res.status(200).json({ success: true, msg: '좋아요 취소' });
       } else {
-        await getRepository(Like).save({ post: Number(id), user });
+        await likeRepository.save(user, Number(id));
         res.status(200).json({ success: true, msg: '좋아요 성공' });
       }
     } catch (err) {
@@ -124,12 +125,16 @@ class postController {
     try {
       const { id } = req.params;
       const user = res.locals.user;
-      const dibExist = await Dib.findByUserAndId(user, Number(id));
+      const dibExist = await dibRepository.findByUserAndPostId(
+        user,
+        Number(id)
+      );
       if (dibExist) {
-        await Dib.deleteOne(Number(id));
+        const dibId = dibExist.id;
+        await dibRepository.deleteOne(dibId);
         res.status(200).json({ success: true, msg: '찜하기 취소' });
       } else {
-        await getRepository(Dib).save({ post: Number(id), user });
+        await dibRepository.save(user, Number(id));
         res.status(200).json({ success: true, msg: '찜하기 성공' });
       }
     } catch (err) {
