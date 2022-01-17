@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Input = (props) => {
-  const { label, text, isPassword, isPreview } = props;
+  const { label, text, isPassword, isPreview, _onChange } = props;
   return (
     <div style={{ marginBottom: '20px' }}>
       {isPreview ? (
@@ -17,12 +17,21 @@ const Input = (props) => {
           <InputEl
             type={isPassword ? 'password' : 'text'}
             placeholder={text}
-            ref={text}
+            onChange={_onChange}
           />
         </>
       )}
     </div>
   );
+};
+
+Input.defaultProps = {
+  label: '',
+  text: '',
+  isPassword: false,
+  isPreview: false,
+  value: '',
+  _onChange: () => {},
 };
 
 const Label = styled.label`
@@ -46,6 +55,7 @@ const PreviewInput = styled.input`
   border-radius: 3px 0px 0px 3px;
   width: 198px;
 `;
+
 const Preview = styled.button`
   width: 150px;
   padding: 15px 10px;

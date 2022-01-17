@@ -3,13 +3,29 @@ import Button from '../elements/button';
 import Input from '../elements/Input';
 import Title from '../elements/Title';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
 const SignUpModal = (props) => {
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
   const [open, setOpen] = useState(false);
   const handleSignUpModal = (e) => {
     if (e.target.className.includes('handleModal')) {
       setOpen(!open);
     }
+  };
+
+  const SignUp = () => {
+    const data = {
+      email,
+      name,
+      password,
+      passwordCheck,
+    };
+    console.log(data);
   };
   return (
     <>
@@ -28,15 +44,31 @@ const SignUpModal = (props) => {
               닫기
             </Close>
             <>
-              <Input label={'이름'} text={'홍길동'} />
-              <Input label={'이메일'} text={'example@example.com'} />
-              <Input label={'패스워드'} text={'********'} isPassword={true} />
+              <Input
+                label={'이름'}
+                text={'홍길동'}
+                _onChange={(e) => setName(e.target.value)}
+              />
+              <Input
+                label={'이메일'}
+                text={'example@example.com'}
+                _onChange={(e) => setEmail(e.target.value)}
+              />
+              <Input
+                label={'패스워드'}
+                text={'********'}
+                isPassword={true}
+                _onChange={(e) => setPassword(e.target.value)}
+              />
               <Input
                 label={'패스워드 확인'}
                 text={'********'}
                 isPassword={true}
+                _onChange={(e) => setPasswordCheck(e.target.value)}
               />
-              <Button isFill={false}>회원가입</Button>
+              <Button isFill={false} _onClick={SignUp}>
+                회원가입
+              </Button>
             </>
           </PopUpWrap>
         </GrayBackground>

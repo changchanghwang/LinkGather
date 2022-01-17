@@ -2,16 +2,28 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Button = (props) => {
-  const { children, isFill, url } = props;
+  const { children, isFill, url, _onClick } = props;
   return isFill ? (
     url ? (
-      <FillButton onClick={() => window.open(url)}>{children}</FillButton>
+      <FillButton
+        onClick={() => {
+          window.open(url);
+        }}
+      >
+        {children}
+      </FillButton>
     ) : (
       <FillButton>{children}</FillButton>
     )
   ) : (
-    <SubmitButton>{children}</SubmitButton>
+    <SubmitButton onClick={_onClick}>{children}</SubmitButton>
   );
+};
+
+Button.defaultProps = {
+  isFill: false,
+  url: false,
+  _onClick: () => {},
 };
 
 const SubmitButton = styled.button`
