@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import Logo from '../elements/Logo';
 import SearchInput from '../elements/SearchInput';
-import LoginModal from './Login';
+import LoginModal from './LoginModal';
 import PostModal from './PostModal';
-import SignUpModal from './SignUp';
+import SignUpModal from './SignUpModal';
 
 const Header = (props) => {
   return (

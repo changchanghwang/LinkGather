@@ -7,6 +7,7 @@ const Input = (props) => {
   const ref = useRef();
   if (isErr) {
     ref.current.focus();
+    console.log(ref.current.value);
   }
   return (
     <div style={{ marginBottom: '20px' }}>

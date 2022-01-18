@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Title from '../elements/Title';
 import styled from 'styled-components';
-import Input from '../elements/Input';
 import Button from '../elements/button';
 
 const PostModal = (props) => {
@@ -33,19 +32,24 @@ const PostModal = (props) => {
               닫기
             </Close>
             <>
-              <div style={{ display: 'flex' }}>
-                <Input
-                  label={'웹 사이트 URL'}
-                  text={'https://www.linkgather.com'}
-                  isPreview={true}
-                />
-              </div>
-              <Input label={'제목'} text={'제목을 입력해주세요'} />
-              <Input
-                label={'설명'}
-                text={'사이트에 대한 간략한 설명을 입력해주세요'}
-              />
-              <Button isFill={false}>등록하기</Button>
+              <InputWrap>
+                <Label>웹 사이트 URL</Label>
+                <div style={{ display: 'flex' }}>
+                  <PreviewInput placeholder="https://www.linkgather.com" />
+                  <Preview>이미지 미리보기</Preview>
+                </div>
+              </InputWrap>
+
+              <InputWrap>
+                <Label>제목</Label>
+                <InputEl type="text" placeholder="제목을 입력해주세요" />
+              </InputWrap>
+
+              <InputWrap>
+                <Label>설명</Label>
+                <InputEl type="text" placeholder="사이트에 대한 간략한 설명을 입력해주세요" />
+                <Button isFill={false}>등록하기</Button>
+              </InputWrap>
             </>
           </PopUpWrap>
         </GrayBackground>
@@ -74,6 +78,42 @@ const PopUpWrap = styled.div`
   width: 370px;
   padding: 30px 40px;
   background-color: #fff;
+`;
+
+const InputWrap = styled.div`
+  margin-bottom: 20px;
+`;
+
+const Label = styled.label`
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #333;
+`;
+
+const PreviewInput = styled.input`
+  padding: 15px 10px;
+  border: 1px solid #dee2e6;
+  border-radius: 3px 0px 0px 3px;
+  width: 198px;
+`;
+
+const Preview = styled.button`
+  width: 150px;
+  padding: 15px 10px;
+  color: #fff;
+  background: #000;
+  border: 0;
+  border-radius: 0px 3px 3px 0px;
+  cursor: pointer;
+`;
+
+const InputEl = styled.input`
+  padding: 15px 10px;
+  border: 1px solid #dee2e6;
+  border-radius: 3px;
+  width: 350px;
 `;
 
 const Close = styled.button`

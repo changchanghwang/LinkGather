@@ -4,7 +4,7 @@ const api = axios.create({
   baseURL: 'http://localhost:3001',
   headers: {
     'content-type': 'application/json;charset=UTF-8',
-    accept: 'application/json',
+    'accept': 'application/json',
   },
   withCredentials: true,
 });
@@ -29,6 +29,7 @@ api.interceptors.request.use((config) => {
 
 export const signUpApi = async (data) => {
   try {
+    console.log(data);
     const res = await api.post('/users/signup', {
       email: data.email,
       name: data.name,
