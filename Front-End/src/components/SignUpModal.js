@@ -3,7 +3,7 @@ import Button from '../elements/button';
 import Title from '../elements/Title';
 import styled from 'styled-components';
 import { signUpApi } from '../axios/axios';
-import { validatePassword } from '../util/passwordValidator';
+import { validatePassword, validatePasswordCheck } from '../util/passwordValidator';
 import { validateEmail } from '../util/emailValidator';
 
 const SignUpModal = (props) => {
@@ -31,7 +31,6 @@ const SignUpModal = (props) => {
 
   //이메일 확인
   useEffect(() => {
-    console.log(email);
     if (!validateEmail(email) || !email) {
       setEmailErr(true);
       setEmailDupErr(false);
@@ -46,7 +45,16 @@ const SignUpModal = (props) => {
 
   //패스워드 확인
   useEffect(() => {
-    if (!validatePassword(password, passwordCheck) || !password || !passwordCheck) {
+    if (!validatePassword(password) || !password) {
+      setPasswordErr(true);
+    } else {
+      setPasswordErr(false);
+    }
+  }, [password]);
+
+  //패스워드 체크 확인
+  useEffect(() => {
+    if (!validatePasswordCheck(password, passwordCheck) || !passwordCheck) {
       setPasswordCheckErr(true);
     } else {
       setPasswordCheckErr(false);
@@ -95,9 +103,25 @@ const SignUpModal = (props) => {
     if (res.status === 200) {
       alert('회원가입 성공');
       setOpen(!open);
+      setNameErr(false);
+      setEmailDupErr(false);
+      setEmailErr(false);
+      setPasswordErr(false);
+      setPasswordCheckErr(false);
     } else if (res.status === 400) {
       if (res.data.msg === '이메일이 중복됩니다.') {
         setEmailDupErr(true);
+        setEmailErr(false);
+        emailRef.current.focus();
+      } else if (res.data.msg === '이메일을 확인해주세요') {
+        setEmailErr(true);
+        emailRef.current.focus();
+      } else if (res.data.msg === '비밀번호 체크란을 확인해주세요') {
+        setPasswordCheckErr(true);
+        passwordCheckRef.current.focus();
+      } else if (res.data.msg === '비밀번호를 확인해주세요') {
+        setPasswordErr(true);
+        passwordRef.current.focus();
       }
     }
   };
@@ -125,7 +149,7 @@ const SignUpModal = (props) => {
               <Label>이메일</Label>
               <InputEl type="text" placeholder="example@example.com" ref={emailRef} onChange={emailChange} />
               {emailDupErr ? <ErrMessage>중복된 이메일입니다.</ErrMessage> : null}
-              {emailErr ? <ErrMessage>이메일을 확인해주세요</ErrMessage> : null}
+              {emailErr ? <ErrMessage>이메일 형식을 확인해주세요</ErrMessage> : null}
             </InputWrap>
 
             <InputWrap>

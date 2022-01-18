@@ -1,29 +1,40 @@
 import { Request, Response, NextFunction } from 'express';
 import { getCustomRepository, getRepository } from 'typeorm';
 import { UserRepository } from '../entity/repository/user.repository';
-import { checkPw } from '../utils/pwCheck';
 import * as bcrypt from 'bcrypt';
 import 'dotenv/config';
 const salt = Number(process.env.SALT);
 import passport = require('passport');
 import { generateToken } from '../utils/tokenGenerator';
 import { User } from '../entity/user.entity';
+import { validateEmail } from '../utils/emailValidator';
+import { validatePw, validatePwCheck } from '../utils/pwCheck';
 
 class userController {
   public signUp = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email, name, password, passwordCheck }: signup = req.body;
+      if (validateEmail(email)) {
+        return res
+          .status(400)
+          .json({ success: false, msg: '이메일을 확인해주세요' });
+      }
       const userRepository = getCustomRepository(UserRepository);
       const exEmail = await userRepository.findOneByEmail(email);
       if (!exEmail) {
-        if (checkPw(password, passwordCheck)) {
-          const hashedPw = bcrypt.hashSync(password, salt);
-          await userRepository.save(email, name, hashedPw);
-          return res.status(200).json({ success: true });
+        if (!validatePwCheck(password, passwordCheck)) {
+          return res
+            .status(400)
+            .json({ success: false, msg: '비밀번호 체크란을 확인해주세요' });
         }
-        return res
-          .status(400)
-          .json({ success: false, msg: '비밀번호를 확인해주세요' });
+        if (!validatePw(password)) {
+          return res
+            .status(400)
+            .json({ success: false, msg: '비밀번호를 확인해주세요' });
+        }
+        const hashedPw = bcrypt.hashSync(password, salt);
+        await userRepository.save(email, name, hashedPw);
+        return res.status(200).json({ success: true });
       }
       return res
         .status(400)
