@@ -12,5 +12,5 @@
     "rootDir": "./src"
   },
   "include": ["src/**/*", "model/dbc.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }

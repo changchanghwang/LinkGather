@@ -1,8 +1,9 @@
 import * as passport from 'passport';
 import { Strategy } from 'passport-local';
 import * as bcrypt from 'bcrypt';
-import { User } from '../entity/user.entity';
+import { UserRepository } from '../entity/repository/user.repository';
 import * as passportJWT from 'passport-jwt';
+import { getCustomRepository } from 'typeorm';
 const jwtStrategy = passportJWT.Strategy;
 
 export const localSignIn = () => {
@@ -17,7 +18,8 @@ export const localSignIn = () => {
       },
       async (email, password, done) => {
         try {
-          const exUser = await User.findOneByEmail(email);
+          const userRepository = getCustomRepository(UserRepository);
+          const exUser = await userRepository.findOneByEmail(email);
           const validatePw = await bcrypt.compare(password, exUser.password);
           if (exUser && validatePw) {
             done(null, exUser);
@@ -42,7 +44,8 @@ export const localSignIn = () => {
       },
       async (jwtPayload, done) => {
         try {
-          const user = await User.findOneById(jwtPayload.id);
+          const userRepository = getCustomRepository(UserRepository);
+          const user = await userRepository.findOneById(jwtPayload.id);
           return done(null, user);
         } catch (err) {
           return done(err);

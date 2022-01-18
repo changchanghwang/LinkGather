@@ -18,6 +18,7 @@ const getToken = () => {
   }
 };
 
+//header 설정
 api.interceptors.request.use((config) => {
   config.headers['Content-Type'] = 'application/json; charset=utf-8';
   config.headers['X-Requested-With'] = 'XMLHttpRequest';
@@ -25,5 +26,19 @@ api.interceptors.request.use((config) => {
   config.headers['authorization'] = getToken();
   return config;
 });
+
+export const signUpApi = async (data) => {
+  try {
+    const res = await api.post('/users/signup', {
+      email: data.email,
+      name: data.name,
+      password: data.password,
+      passwordCheck: data.passwordCheck,
+    });
+    return res;
+  } catch (err) {
+    return err.response;
+  }
+};
 
 export default api;

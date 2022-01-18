@@ -4,6 +4,7 @@ import * as morgan from 'morgan';
 import * as helmet from 'helmet';
 import * as compression from 'compression';
 import * as passport from 'passport';
+import * as cors from 'cors';
 import { localSignIn } from './passport/localStrategy';
 import Routers from './interfaces/router.interface';
 import indexRouter from './routes';
@@ -22,6 +23,10 @@ class Server {
     this.errorHandleMiddleware();
   }
 
+  private connectDatabase() {
+    dbConnect.connection();
+  }
+
   private initializeRouter(routers: Routers[]) {
     routers.forEach((router) => {
       this.app.use('/', router.router);
@@ -33,6 +38,7 @@ class Server {
   }
 
   private middleware() {
+    this.app.use(cors({ origin: true, credentials: true }));
     this.app.use(morgan('dev'));
     this.app.use(helmet());
     this.app.use(compression());
@@ -47,10 +53,6 @@ class Server {
 
   private errorHandleMiddleware() {
     this.app.use(errorHandler);
-  }
-
-  private connectDatabase() {
-    dbConnect.connection();
   }
 }
 

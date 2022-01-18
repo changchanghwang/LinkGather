@@ -8,14 +8,14 @@ const salt = Number(process.env.SALT);
 import passport = require('passport');
 import { generateToken } from '../utils/tokenGenerator';
 import { User } from '../entity/user.entity';
-const userRepository = getCustomRepository(UserRepository);
 
 class userController {
   public signUp = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email, name, password, passwordCheck }: signup = req.body;
-      const exUser = await userRepository.findOneByEmail(email);
-      if (exUser) {
+      const userRepository = getCustomRepository(UserRepository);
+      const exEmail = await userRepository.findOneByEmail(email);
+      if (!exEmail) {
         if (checkPw(password, passwordCheck)) {
           const hashedPw = bcrypt.hashSync(password, salt);
           await userRepository.save(email, name, hashedPw);
@@ -27,7 +27,7 @@ class userController {
       }
       return res
         .status(400)
-        .json({ success: false, msg: '아이디가 중복됩니다.' });
+        .json({ success: false, msg: '이메일이 중복됩니다.' });
     } catch (err) {
       next(err);
     }

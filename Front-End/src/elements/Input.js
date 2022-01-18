@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 
 const Input = (props) => {
-  const { label, text, isPassword, isPreview, _onChange } = props;
+  const { label, text, isPassword, isPreview, _onChange, isErr, ErrText } =
+    props;
+  const ref = useRef();
+  if (isErr) {
+    ref.current.focus();
+  }
   return (
     <div style={{ marginBottom: '20px' }}>
       {isPreview ? (
@@ -18,7 +23,9 @@ const Input = (props) => {
             type={isPassword ? 'password' : 'text'}
             placeholder={text}
             onChange={_onChange}
+            ref={ref}
           />
+          {isErr ? <ErrMessage>{ErrText}</ErrMessage> : null}
         </>
       )}
     </div>
@@ -64,6 +71,11 @@ const Preview = styled.button`
   border: 0;
   border-radius: 0px 3px 3px 0px;
   cursor: pointer;
+`;
+
+const ErrMessage = styled.span`
+  font-size: 0.6em;
+  color: rgb(226, 91, 69);
 `;
 
 export default Input;

@@ -6,9 +6,6 @@ import { PostRepository } from '../entity/repository/post.repository';
 import { LikeRepository } from '../entity/repository/like.repository';
 import { DibRepository } from '../entity/repository/dib.repository';
 import { crawling } from '../utils/crawling';
-const postRepository = getCustomRepository(PostRepository);
-const likeRepository = getCustomRepository(LikeRepository);
-const dibRepository = getCustomRepository(DibRepository);
 
 class postController {
   //게시글 작성
@@ -20,6 +17,7 @@ class postController {
     try {
       const { url, title, desc }: postInput = req.body;
       const user: number = res.locals.user;
+      const postRepository = getCustomRepository(PostRepository);
       let image = await crawling(url);
       if (!image) {
         image =
@@ -39,6 +37,7 @@ class postController {
       const { id } = req.params;
       const { url, title, desc } = req.body;
       const user = res.locals.user;
+      const postRepository = getCustomRepository(PostRepository);
       const post = await postRepository.findByUserAndId(user, Number(id));
       if (post) {
         let image = await crawling(url);
@@ -66,6 +65,7 @@ class postController {
     try {
       const { id } = req.params;
       const user = res.locals.user;
+      const postRepository = getCustomRepository(PostRepository);
       const post = await postRepository.findByUserAndId(user, Number(id));
       if (post) {
         await postRepository.deleteOne(Number(id));
@@ -103,6 +103,7 @@ class postController {
     try {
       const { id } = req.params;
       const user = res.locals.user;
+      const likeRepository = getCustomRepository(LikeRepository);
       const likeExist = await likeRepository.findByUserAndPostId(
         user,
         Number(id)
@@ -125,6 +126,7 @@ class postController {
     try {
       const { id } = req.params;
       const user = res.locals.user;
+      const dibRepository = getCustomRepository(DibRepository);
       const dibExist = await dibRepository.findByUserAndPostId(
         user,
         Number(id)
