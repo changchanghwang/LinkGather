@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Title from '../elements/Title';
-import styled from 'styled-components';
 import Button from '../elements/button';
+import styled from 'styled-components';
 
 const PostModal = (props) => {
   const [open, setOpen] = useState(false);

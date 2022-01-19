@@ -42,4 +42,17 @@ export const signUpApi = async (data) => {
   }
 };
 
+export const loginApi = async (data) => {
+  try {
+    console.log(data);
+    const res = await api.post('/users/signin', {
+      email: data.email,
+      password: data.password,
+    });
+    return res;
+  } catch (err) {
+    return err.response;
+  }
+};
+
 export default api;

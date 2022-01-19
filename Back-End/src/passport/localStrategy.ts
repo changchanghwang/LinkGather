@@ -18,6 +18,7 @@ export const localSignIn = () => {
       },
       async (email, password, done) => {
         try {
+          console.log(email, password);
           const userRepository = getCustomRepository(UserRepository);
           const exUser = await userRepository.findOneByEmail(email);
           const validatePw = await bcrypt.compare(password, exUser.password);

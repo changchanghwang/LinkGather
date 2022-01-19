@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import Logo from '../elements/Logo';
+import Logout from '../elements/LogoutButton';
 import SearchInput from '../elements/SearchInput';
 import LoginModal from './LoginModal';
 import PostModal from './PostModal';
 import SignUpModal from './SignUpModal';
+import { UserContext } from '../contextAPI/users';
 
 const Header = (props) => {
   return (
@@ -14,8 +16,18 @@ const Header = (props) => {
           <Logo />
           <SearchInput />
           <MemberBox>
-            <SignUpModal />
-            <LoginModal />
+            <UserContext.Consumer>
+              {(value) => {
+                return value ? (
+                  <Logout />
+                ) : (
+                  <>
+                    <SignUpModal />
+                    <LoginModal />
+                  </>
+                );
+              }}
+            </UserContext.Consumer>
           </MemberBox>
         </Box>
       </Container>

@@ -14,7 +14,8 @@ class userController {
   public signUp = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email, name, password, passwordCheck }: signup = req.body;
-      if (validateEmail(email)) {
+      console.log(req.body);
+      if (!validateEmail(email)) {
         return res
           .status(400)
           .json({ success: false, msg: '이메일을 확인해주세요' });

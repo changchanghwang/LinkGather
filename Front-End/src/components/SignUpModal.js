@@ -10,13 +10,13 @@ const SignUpModal = (props) => {
   //modal state
   const [open, setOpen] = useState(false);
 
-  //회원가입 정보
+  //회원가입 정보 state
   const [email, setEmail] = useState(null);
   const [name, setName] = useState(null);
   const [password, setPassword] = useState(null);
   const [passwordCheck, setPasswordCheck] = useState(null);
 
-  //에러처리
+  //에러처리 state
   const [nameErr, setNameErr] = useState(false);
   const [emailErr, setEmailErr] = useState(false);
   const [emailDupErr, setEmailDupErr] = useState(false);
@@ -79,7 +79,7 @@ const SignUpModal = (props) => {
     setPasswordCheck(pwCheck);
   };
 
-  //handle signup modal
+  //modal controll
   const handleSignUpModal = (e) => {
     if (e.target.className.includes('handleModal')) {
       setOpen(!open);
@@ -192,7 +192,7 @@ const PopUpWrap = styled.div`
   max-height: 100vh;
   z-index: 10;
   width: 370px;
-  padding: 30px 40px;
+  padding: 50px 60px;
   background-color: #fff;
 `;
 

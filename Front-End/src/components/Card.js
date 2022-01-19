@@ -16,8 +16,7 @@ const Card = (props) => {
     {
       title: 'ㅎㅎ',
       desc: 'gg',
-      image:
-        'https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png',
+      image: 'https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png',
       url: 'https://www.naver.com',
       uploadTime: '2021-01-17',
       likeNum: 5,
@@ -25,8 +24,7 @@ const Card = (props) => {
     {
       title: '22',
       desc: 'gg',
-      image:
-        'https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png',
+      image: 'https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png',
       url: 'https://www.naver.com',
       uploadTime: '2021-01-17',
       likeNum: 5,
@@ -34,8 +32,7 @@ const Card = (props) => {
     {
       title: '33',
       desc: 'gg',
-      image:
-        'https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png',
+      image: 'https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png',
       url: 'https://www.naver.com',
       uploadTime: '2021-01-17',
       likeNum: 5,
@@ -43,8 +40,7 @@ const Card = (props) => {
     {
       title: '44',
       desc: 'gg',
-      image:
-        'https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png',
+      image: 'https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png',
       url: 'https://www.naver.com',
       uploadTime: '2021-01-17',
       likeNum: 5,
@@ -62,13 +58,11 @@ const Card = (props) => {
     <Grid>
       {cards.map((card, i) => {
         return (
-          <CardBg>
+          <CardBg key={i}>
             <div>
               <ImgHidden>
                 <img src={card.image} alt="" />
-                <Jjim onClick={handleDib}>
-                  {Dib ? <FillHeart /> : <EmptyHeart />}
-                </Jjim>
+                <Jjim onClick={handleDib}>{Dib ? <FillHeart /> : <EmptyHeart />}</Jjim>
               </ImgHidden>
               <Title>{card.title}</Title>
               <CountWrap>
@@ -133,8 +127,7 @@ const Jjim = styled.button`
   align-items: center;
   font-size: 8px;
   cursor: pointer;
-  filter: drop-shadow(rgba(41, 42, 43, 0.2) 0px 1px 3px)
-    drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 0.5px);
+  filter: drop-shadow(rgba(41, 42, 43, 0.2) 0px 1px 3px) drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 0.5px);
   &:hover {
     background-color: rgb(239, 239, 239, 0.1);
     transition: background-color 0.3s ease 0s;
