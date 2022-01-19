@@ -18,7 +18,8 @@ const Header = (props) => {
           <MemberBox>
             <UserContext.Consumer>
               {(value) => {
-                return value ? (
+                console.log(value);
+                return value.isLogin ? (
                   <Logout />
                 ) : (
                   <>

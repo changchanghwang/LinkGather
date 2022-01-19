@@ -3,7 +3,6 @@ import Title from '../elements/Title';
 import Button from '../elements/button';
 import styled from 'styled-components';
 import { loginApi } from '../axios/axios';
-import { UserContext } from '../contextAPI/users';
 
 const LoginModal = (props) => {
   //modal state
@@ -12,7 +11,6 @@ const LoginModal = (props) => {
   //로그인 정보 state
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
-  const [isLogin, setIsLogin] = useState(false);
 
   //err state
   const [loginErr, setLoginErr] = useState(false);
@@ -67,7 +65,6 @@ const LoginModal = (props) => {
     if (res.status === 200) {
       localStorage.setItem('token', res.data.token);
       setOpen(!open);
-      setIsLogin(true);
     } else {
       setEmailNull(false);
       setPasswordNull(false);
@@ -119,7 +116,6 @@ const LoginModal = (props) => {
               <Button isFill={false} _onClick={login}>
                 로그인
               </Button>
-              {isLogin ? <UserContext.Provider value={true} /> : null}
             </>
           </PopUpWrap>
         </GrayBackground>
