@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import { UserContext } from '../contextAPI/users';
 
 const Logout = (props) => {
+  const { setState } = useContext(UserContext);
+
   const logout = () => {
     localStorage.removeItem('token');
+    setState(false);
   };
   return <LogoutButton onClick={logout}>로그아웃</LogoutButton>;
 };

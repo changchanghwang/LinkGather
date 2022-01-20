@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getToken } from '../util/getToken';
 
 const api = axios.create({
   baseURL: 'http://localhost:3001',
@@ -8,15 +9,6 @@ const api = axios.create({
   },
   withCredentials: true,
 });
-
-const getToken = () => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    return `Bearer ${token}`;
-  } else {
-    return null;
-  }
-};
 
 //header 설정
 api.interceptors.request.use((config) => {

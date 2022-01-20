@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import Logo from '../elements/Logo';
 import Logout from '../elements/LogoutButton';
@@ -9,6 +9,7 @@ import SignUpModal from './SignUpModal';
 import { UserContext } from '../contextAPI/users';
 
 const Header = (props) => {
+  let { isLogin } = useContext(UserContext);
   return (
     <Head>
       <Container>
@@ -16,19 +17,14 @@ const Header = (props) => {
           <Logo />
           <SearchInput />
           <MemberBox>
-            <UserContext.Consumer>
-              {(value) => {
-                console.log(value);
-                return value.isLogin ? (
-                  <Logout />
-                ) : (
-                  <>
-                    <SignUpModal />
-                    <LoginModal />
-                  </>
-                );
-              }}
-            </UserContext.Consumer>
+            {isLogin ? (
+              <Logout />
+            ) : (
+              <>
+                <SignUpModal />
+                <LoginModal />
+              </>
+            )}
           </MemberBox>
         </Box>
       </Container>

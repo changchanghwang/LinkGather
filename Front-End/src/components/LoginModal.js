@@ -1,8 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import Title from '../elements/Title';
 import Button from '../elements/button';
 import styled from 'styled-components';
 import { loginApi } from '../axios/axios';
+import { UserContext } from '../contextAPI/users';
 
 const LoginModal = (props) => {
   //modal state
@@ -20,6 +21,9 @@ const LoginModal = (props) => {
   //ref
   const emailRef = useRef();
   const passwordRef = useRef();
+
+  //useContext
+  const { isLogin, setState } = useContext(UserContext);
 
   //input onChange event
   const emailChange = (e) => {
@@ -64,6 +68,7 @@ const LoginModal = (props) => {
 
     if (res.status === 200) {
       localStorage.setItem('token', res.data.token);
+      setState(true);
       setOpen(!open);
     } else {
       setEmailNull(false);
