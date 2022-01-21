@@ -27,6 +27,9 @@ export class PostRepository extends AbstractRepository<Post> {
   findById(id: number) {
     return this.repository.findOne({ id });
   }
+  findAll() {
+    return this.repository.find({});
+  }
 
   async updateOne(
     url: string,

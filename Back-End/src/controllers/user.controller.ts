@@ -14,7 +14,6 @@ class userController {
   public signUp = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email, name, password, passwordCheck }: signup = req.body;
-      console.log(req.body);
       if (!validateEmail(email)) {
         return res
           .status(400)

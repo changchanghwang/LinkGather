@@ -8,6 +8,18 @@ import { DibRepository } from '../entity/repository/dib.repository';
 import { crawling } from '../utils/crawling';
 
 class postController {
+  //게시글 뷰
+  public getPost = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const postRepository = getCustomRepository(PostRepository);
+      const posts = await postRepository.findAll();
+      console.log(posts);
+      return res.status(200).json({ success: true, posts });
+    } catch (err) {
+      next(err);
+    }
+  };
+
   //게시글 작성
   public createPost = async (
     req: Request,
@@ -92,7 +104,7 @@ class postController {
         image =
           'https://user-images.githubusercontent.com/86486778/148679216-0d895bca-7499-4c67-9a80-93e295d7650c.png';
       }
-      res.status(200).json({ image });
+      res.status(200).json({ success: true, image });
     } catch (err) {
       next(err);
     }

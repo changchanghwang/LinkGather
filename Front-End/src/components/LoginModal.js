@@ -23,17 +23,17 @@ const LoginModal = (props) => {
   const passwordRef = useRef();
 
   //useContext
-  const { isLogin, setState } = useContext(UserContext);
+  const { setState } = useContext(UserContext);
 
   //input onChange event
   const emailChange = (e) => {
-    const mail = e.target.value;
-    setEmail(mail);
+    const EMAIL = e.target.value;
+    setEmail(EMAIL);
   };
 
   const passwordChange = (e) => {
-    const pw = e.target.value;
-    setPassword(pw);
+    const PASSWORD = e.target.value;
+    setPassword(PASSWORD);
   };
 
   //modal controll

@@ -1,7 +1,7 @@
 export const getToken = () => {
   const token = localStorage.getItem('token');
   if (token) {
-    return `Bearer ${token}`;
+    return `${token}`;
   } else {
     return null;
   }

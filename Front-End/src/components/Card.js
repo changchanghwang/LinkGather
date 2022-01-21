@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as EmptyHeart } from '../images/emptyHeart.svg';
 import { ReactComponent as FillHeart } from '../images/fillHeart.svg';
@@ -6,54 +6,14 @@ import { FiThumbsUp } from 'react-icons/fi';
 import LikeCountImg from '../images/likeCount.png';
 import Grid from '../elements/Grid';
 import Button from '../elements/button';
+import { PostContext } from '../contextAPI/posts';
 
 const Card = (props) => {
   const [Dib, setDib] = useState(false);
   const handleDib = () => {
     setDib(!Dib);
   };
-  const [cards, setCards] = useState([
-    {
-      title: 'ㅎㅎ',
-      desc: 'gg',
-      image: 'https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png',
-      url: 'https://www.naver.com',
-      uploadTime: '2021-01-17',
-      likeNum: 5,
-    },
-    {
-      title: '22',
-      desc: 'gg',
-      image: 'https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png',
-      url: 'https://www.naver.com',
-      uploadTime: '2021-01-17',
-      likeNum: 5,
-    },
-    {
-      title: '33',
-      desc: 'gg',
-      image: 'https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png',
-      url: 'https://www.naver.com',
-      uploadTime: '2021-01-17',
-      likeNum: 5,
-    },
-    {
-      title: '44',
-      desc: 'gg',
-      image: 'https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png',
-      url: 'https://www.naver.com',
-      uploadTime: '2021-01-17',
-      likeNum: 5,
-    },
-    {
-      title: '55',
-      desc: 'gg',
-      image: 'https://www.youtube.com/img/desktop/yt_1200.png',
-      url: 'https://www.naver.com',
-      uploadTime: '2021-01-17',
-      likeNum: 5,
-    },
-  ]);
+  const { cards } = useContext(PostContext);
   return (
     <Grid>
       {cards.map((card, i) => {
@@ -127,7 +87,8 @@ const Jjim = styled.button`
   align-items: center;
   font-size: 8px;
   cursor: pointer;
-  filter: drop-shadow(rgba(41, 42, 43, 0.2) 0px 1px 3px) drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 0.5px);
+  filter: drop-shadow(rgba(41, 42, 43, 0.2) 0px 1px 3px)
+    drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 0.5px);
   &:hover {
     background-color: rgb(239, 239, 239, 0.1);
     transition: background-color 0.3s ease 0s;
