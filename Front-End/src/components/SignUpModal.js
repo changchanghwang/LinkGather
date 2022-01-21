@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Button from '../elements/button';
+import Button from '../elements/Button';
 import Title from '../elements/Title';
 import styled from 'styled-components';
 import { signUpApi } from '../axios/axios';

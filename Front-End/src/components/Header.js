@@ -7,9 +7,13 @@ import LoginModal from './LoginModal';
 import PostModal from './PostModal';
 import SignUpModal from './SignUpModal';
 import { UserContext } from '../contextAPI/users';
+import MyPageButton from '../elements/MyPage';
 
 const Header = (props) => {
   let { isLogin } = useContext(UserContext);
+  // const [recentClcik, setRecentClick] = useState(false);
+  // const [recomendClcik, setRecomendClcik] = useState(false);
+
   return (
     <Head>
       <Container>
@@ -18,7 +22,10 @@ const Header = (props) => {
           <SearchInput />
           <MemberBox>
             {isLogin ? (
-              <Logout />
+              <>
+                <MyPageButton />
+                <Logout />
+              </>
             ) : (
               <>
                 <SignUpModal />
@@ -31,23 +38,9 @@ const Header = (props) => {
       <PostingContainer>
         <PostingBox>
           <div>
-            <span
-              style={{
-                fontSize: '12px',
-                cursor: 'pointer',
-              }}
-            >
-              최신순
-            </span>
+            <Sort>최신순</Sort>
             <span style={{ color: '#dee2e6', margin: '0px 10px' }}>|</span>
-            <span
-              style={{
-                fontSize: '12px',
-                cursor: 'pointer',
-              }}
-            >
-              추천순
-            </span>
+            <Sort>추천순</Sort>
           </div>
           <PostModal />
         </PostingBox>
@@ -106,4 +99,10 @@ const PostingBox = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
+
+const Sort = styled.span`
+  font-size: 12px;
+  cursor: pointer;
+`;
+
 export default Header;

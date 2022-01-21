@@ -1,6 +1,6 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
 import Title from '../elements/Title';
-import Button from '../elements/button';
+import Button from '../elements/Button';
 import styled from 'styled-components';
 import { UserContext } from '../contextAPI/users';
 import { previewApi, submitPostApi } from '../axios/axios';
