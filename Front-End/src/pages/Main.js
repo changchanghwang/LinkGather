@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
-import Card from '../components/Card';
+import CardList from '../components/CardList';
 import { PostContext } from '../contextAPI/posts';
 import { getPostApi } from '../axios/axios';
 
@@ -14,10 +14,11 @@ const Main = (props) => {
   useEffect(() => {
     setPosts();
   }, []);
+
   return (
     <PostContext.Provider value={{ cards, setPosts }}>
       <Header />
-      <Card />
+      <CardList />
     </PostContext.Provider>
   );
 };

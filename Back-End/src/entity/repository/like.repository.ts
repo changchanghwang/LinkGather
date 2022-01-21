@@ -17,4 +17,8 @@ export class LikeRepository extends AbstractRepository<Like> {
   deleteOne(id: number) {
     return this.repository.delete({ id });
   }
+
+  countNum(post: number) {
+    return this.repository.count({ post });
+  }
 }

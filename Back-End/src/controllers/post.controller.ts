@@ -116,6 +116,7 @@ class postController {
       const { id } = req.params;
       const user = res.locals.user;
       const likeRepository = getCustomRepository(LikeRepository);
+      const postRepository = getCustomRepository(PostRepository);
       const likeExist = await likeRepository.findByUserAndPostId(
         user,
         Number(id)
@@ -123,9 +124,13 @@ class postController {
       if (likeExist) {
         const likeId = likeExist.id;
         await likeRepository.deleteOne(likeId);
+        const likeNum = await likeRepository.countNum(Number(id));
+        await postRepository.updateLikeNum(Number(id), likeNum);
         res.status(200).json({ success: true, msg: '좋아요 취소' });
       } else {
         await likeRepository.save(user, Number(id));
+        const likeNum = await likeRepository.countNum(Number(id));
+        await postRepository.updateLikeNum(Number(id), likeNum);
         res.status(200).json({ success: true, msg: '좋아요 성공' });
       }
     } catch (err) {

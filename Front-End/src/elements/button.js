@@ -13,7 +13,7 @@ const Button = (props) => {
         {children}
       </FillButton>
     ) : (
-      <FillButton>{children}</FillButton>
+      <FillButton onClick={_onClick}>{children}</FillButton>
     )
   ) : (
     <SubmitButton onClick={_onClick}>{children}</SubmitButton>

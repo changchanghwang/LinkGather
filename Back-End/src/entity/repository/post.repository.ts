@@ -51,6 +51,12 @@ export class PostRepository extends AbstractRepository<Post> {
     return this.manager.save(post);
   }
 
+  async updateLikeNum(id: number, likeNum: number) {
+    const post = await this.repository.findOne({ id });
+    post.likeNum = likeNum;
+    return this.manager.save(post);
+  }
+
   deleteOne(id: number) {
     return this.repository.delete({ id });
   }

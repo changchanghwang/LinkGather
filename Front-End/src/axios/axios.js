@@ -72,12 +72,20 @@ export const getPostApi = async () => {
 //포스트 등록 api
 export const submitPostApi = async (data) => {
   try {
-    const res = api.post('/posts', {
+    return api.post('/posts', {
       url: data.url,
       title: data.title,
       desc: data.desc,
     });
-    return res;
+  } catch (err) {
+    return err.response;
+  }
+};
+
+//추천하기 api
+export const likeApi = async (id) => {
+  try {
+    return await api.post(`/posts/${id}/like`);
   } catch (err) {
     return err.response;
   }

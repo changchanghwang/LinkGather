@@ -1,59 +1,55 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as EmptyHeart } from '../images/emptyHeart.svg';
 import { ReactComponent as FillHeart } from '../images/fillHeart.svg';
-import { FiThumbsUp } from 'react-icons/fi';
-import LikeCountImg from '../images/likeCount.png';
-import Grid from '../elements/Grid';
+import { likeApi } from '../axios/axios';
 import Button from '../elements/Button';
-import { PostContext } from '../contextAPI/posts';
-import TopButton from '../elements/TopButton';
+import LikeCountImg from '../images/likeCount.png';
+import { FiThumbsUp } from 'react-icons/fi';
 
 const Card = (props) => {
+  const { card } = props;
+
+  const [likes, setLikes] = useState(0);
   const [Dib, setDib] = useState(false);
   const handleDib = () => {
     setDib(!Dib);
   };
-  const { cards } = useContext(PostContext);
+
+  const like = async (id) => {
+    await likeApi(id);
+  };
+
   return (
-    <Grid>
-      <TopButton />
-      {cards.map((card, i) => {
-        return (
-          <CardBg key={i}>
-            <div>
-              <ImgHidden>
-                <img src={card.image} alt="" />
-                <Jjim onClick={handleDib}>{Dib ? <FillHeart /> : <EmptyHeart />}</Jjim>
-              </ImgHidden>
-              <Title>{card.title}</Title>
-              <CountWrap>
-                <img src={LikeCountImg} alt="" />
-                <span>{card.likeNum}</span>
-              </CountWrap>
-              <hr />
-              <ButtonWrap>
-                <Button isFill={true}>
-                  <FiThumbsUp style={{ width: '16px', height: '16px' }} />
-                  <span>추천하기</span>
-                </Button>
-                <Button isFill={true} url={card.url}>
-                  <span>바로가기</span>
-                </Button>
-              </ButtonWrap>
-            </div>
-          </CardBg>
-        );
-      })}
-    </Grid>
+    <>
+      <ImgHidden>
+        <img src={card?.image} alt="" />
+        <Jjim onClick={handleDib}>{Dib ? <FillHeart /> : <EmptyHeart />}</Jjim>
+      </ImgHidden>
+      <Title>{card?.title}</Title>
+      <CountWrap>
+        <img src={LikeCountImg} alt="" />
+        <span>{!likes ? card.likeNum : likes}</span>
+      </CountWrap>
+      <hr />
+      <ButtonWrap>
+        <Button
+          isFill={true}
+          _onClick={() => {
+            like(card?.id);
+            !likes ? setLikes(card.likeNum + 1) : setLikes(likes - 1);
+          }}
+        >
+          <FiThumbsUp style={{ width: '16px', height: '16px' }} />
+          <span>추천하기</span>
+        </Button>
+        <Button isFill={true} url={card?.url}>
+          <span>바로가기</span>
+        </Button>
+      </ButtonWrap>
+    </>
   );
 };
-
-const CardBg = styled.div`
-  margin-bottom: 32px;
-  border-radius: 5px;
-  cursor: pointer;
-`;
 
 const ImgHidden = styled.div`
   overflow: hidden;
