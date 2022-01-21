@@ -11,8 +11,6 @@ import MyPageButton from '../elements/MyPage';
 
 const Header = (props) => {
   let { isLogin } = useContext(UserContext);
-  // const [recentClcik, setRecentClick] = useState(false);
-  // const [recomendClcik, setRecomendClcik] = useState(false);
 
   return (
     <Head>
