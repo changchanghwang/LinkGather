@@ -4,6 +4,7 @@ import Button from '../elements/Button';
 import styled from 'styled-components';
 import { loginApi } from '../axios/axios';
 import { UserContext } from '../contextAPI/users';
+import CloseButton from '../elements/CloseButton';
 
 const LoginModal = (props) => {
   //modal state
@@ -91,9 +92,7 @@ const LoginModal = (props) => {
         <GrayBackground className="handleModal" onClick={handleLoginModal}>
           <PopUpWrap>
             <Title text={'로그인'} />
-            <Close className="handleModal" onClick={handleLoginModal}>
-              닫기
-            </Close>
+            <CloseButton _onClick={handleLoginModal} />
             <>
               <InputWrap>
                 <Label>이메일</Label>
@@ -176,15 +175,6 @@ const InputEl = styled.input`
   width: 350px;
 `;
 
-const Close = styled.button`
-  position: absolute;
-  top: -25px;
-  right: 0px;
-  border: 0;
-  color: #fff;
-  background-color: transparent;
-  cursor: pointer;
-`;
 const ErrMessage = styled.span`
   font-size: 0.6em;
   color: rgb(226, 91, 69);

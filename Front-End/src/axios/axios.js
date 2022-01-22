@@ -91,4 +91,13 @@ export const likeApi = async (id) => {
   }
 };
 
+//찜하기 api
+export const dibApi = async (id) => {
+  try {
+    return await api.post(`/posts/${id}/dib`);
+  } catch (err) {
+    return err.response;
+  }
+};
+
 export default api;

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { signUpApi } from '../axios/axios';
 import { validatePassword, validatePasswordCheck } from '../util/passwordValidator';
 import { validateEmail } from '../util/emailValidator';
+import CloseButton from '../elements/CloseButton';
 
 const SignUpModal = (props) => {
   //modal state
@@ -198,9 +199,7 @@ const SignUpModal = (props) => {
         <GrayBackground className="handleModal" onClick={handleSignUpModal}>
           <PopUpWrap>
             <Title text={'회원가입'} />
-            <Close className="handleModal" onClick={handleSignUpModal}>
-              닫기
-            </Close>
+            <CloseButton _onClick={handleSignUpModal} />
 
             <InputWrap>
               <Label>이름</Label>
@@ -300,16 +299,6 @@ const InputEl = styled.input`
 const ErrMessage = styled.span`
   font-size: 0.6em;
   color: rgb(226, 91, 69);
-`;
-
-const Close = styled.button`
-  position: absolute;
-  top: -25px;
-  right: 0px;
-  border: 0;
-  color: #fff;
-  background-color: transparent;
-  cursor: pointer;
 `;
 
 export default SignUpModal;

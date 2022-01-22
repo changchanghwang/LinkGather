@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { UserContext } from '../contextAPI/users';
 import { previewApi, submitPostApi } from '../axios/axios';
 import { PostContext } from '../contextAPI/posts';
+import CloseButton from '../elements/CloseButton';
 
 const PostModal = (props) => {
   //modal state
@@ -143,9 +144,7 @@ const PostModal = (props) => {
         <GrayBackground className="handleModal" onClick={handlePostModal}>
           <PopUpWrap>
             <Title text={'등록하기'} />
-            <Close className="handleModal" onClick={handlePostModal}>
-              닫기
-            </Close>
+            <CloseButton _onClick={handlePostModal} />
             {preview ? <PreviewImage src={preview} alt="" /> : null}
             <>
               <InputWrap>
@@ -271,16 +270,6 @@ const Desc = styled.textarea`
 const ErrMessage = styled.span`
   font-size: 0.6em;
   color: rgb(226, 91, 69);
-`;
-
-const Close = styled.button`
-  position: absolute;
-  top: -25px;
-  right: 0px;
-  border: 0;
-  color: #fff;
-  background-color: transparent;
-  cursor: pointer;
 `;
 
 export default PostModal;

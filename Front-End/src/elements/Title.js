@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Title = (props) => {
   const { text } = props;
-  return <T>{text}</T>;
+  return <T className="handleModal">{text}</T>;
 };
 
 const T = styled.div`

@@ -8,7 +8,6 @@ import Card from './Card';
 const CardList = (props) => {
   //useContext
   const { cards } = useContext(PostContext);
-
   return (
     <Grid>
       <TopButton />
@@ -26,7 +25,6 @@ const CardList = (props) => {
 const CardBg = styled.div`
   margin-bottom: 32px;
   border-radius: 5px;
-  cursor: pointer;
 `;
 
 export default CardList;

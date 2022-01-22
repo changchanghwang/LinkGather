@@ -1,35 +1,67 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as EmptyHeart } from '../images/emptyHeart.svg';
 import { ReactComponent as FillHeart } from '../images/fillHeart.svg';
-import { likeApi } from '../axios/axios';
+import { dibApi, likeApi } from '../axios/axios';
 import Button from '../elements/Button';
 import LikeCountImg from '../images/likeCount.png';
 import { FiThumbsUp } from 'react-icons/fi';
+import { UserContext } from '../contextAPI/users';
+import CardDetail from './CardDetail';
 
 const Card = (props) => {
   const { card } = props;
+  const { isLogin } = useContext(UserContext);
+  //좋아요, 찜하기 state
+  const [likes, setLikes] = useState(card?.likeNum);
+  const [Dibs, setDibs] = useState(card?.dibs?.length ? true : false);
+  //modal state
+  const [open, setOpen] = useState(false);
 
-  const [likes, setLikes] = useState(0);
-  const [Dib, setDib] = useState(false);
-  const handleDib = () => {
-    setDib(!Dib);
+  //찜하기
+  const Dib = async (id) => {
+    const res = await dibApi(id);
+    if (res.status === 200) {
+      setDibs(!Dibs);
+    } else {
+      alert('로그인 해주세요');
+    }
   };
 
   const like = async (id) => {
-    await likeApi(id);
+    const res = await likeApi(id);
+    if (res.status === 200) {
+      setLikes(res.data?.likeNum);
+    } else {
+      alert('로그인 해주세요');
+    }
+  };
+
+  const handleDetailModal = (e) => {
+    if (e.target?.className?.includes('handleModal')) {
+      setOpen(!open);
+    }
   };
 
   return (
     <>
+      {open ? <CardDetail _onClick={handleDetailModal} card={card} /> : null}
       <ImgHidden>
-        <img src={card?.image} alt="" />
-        <Jjim onClick={handleDib}>{Dib ? <FillHeart /> : <EmptyHeart />}</Jjim>
+        <img src={card?.image} alt="" className="handleModal" onClick={handleDetailModal} />
+        <Jjim
+          onClick={() => {
+            Dib(card?.id);
+          }}
+        >
+          {Dibs && isLogin ? <FillHeart /> : <EmptyHeart />}
+        </Jjim>
       </ImgHidden>
-      <Title>{card?.title}</Title>
-      <CountWrap>
+      <Title className="handleModal" onClick={handleDetailModal}>
+        {card?.title}
+      </Title>
+      <CountWrap className="handleModal" onClick={handleDetailModal}>
         <img src={LikeCountImg} alt="" />
-        <span>{!likes ? card.likeNum : likes}</span>
+        <span>{likes}</span>
       </CountWrap>
       <hr />
       <ButtonWrap>
@@ -37,7 +69,6 @@ const Card = (props) => {
           isFill={true}
           _onClick={() => {
             like(card?.id);
-            !likes ? setLikes(card.likeNum + 1) : setLikes(likes - 1);
           }}
         >
           <FiThumbsUp style={{ width: '16px', height: '16px' }} />
@@ -58,6 +89,7 @@ const ImgHidden = styled.div`
   align-items: center;
   display: flex;
   position: relative;
+  cursor: pointer;
   & img {
     height: 155px;
     object-fit: cover;
@@ -84,12 +116,15 @@ const Jjim = styled.button`
   justify-content: center;
   align-items: center;
   font-size: 8px;
-  cursor: pointer;
   filter: drop-shadow(rgba(41, 42, 43, 0.2) 0px 1px 3px)
     drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 0.5px);
   &:hover {
     background-color: rgb(239, 239, 239, 0.1);
     transition: background-color 0.3s ease 0s;
+  }
+  & svg {
+    width: 32px;
+    height: 32px;
   }
 `;
 
@@ -105,6 +140,7 @@ const Title = styled.span`
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   margin: 4px 0px 6px;
+  cursor: pointer;
 `;
 
 const CountWrap = styled.div`
@@ -117,6 +153,7 @@ const CountWrap = styled.div`
   -webkit-box-align: center;
   align-items: center;
   color: rgb(162, 162, 162);
+  cursor: pointer;
   & img {
     display: flex;
     -webkit-box-align: center;
