@@ -52,7 +52,7 @@ export class Post {
   })
   user: number | User;
 
-  @OneToMany((type) => Like, (likes) => likes.user, {
+  @OneToMany((type) => Like, (likes) => likes.post, {
     nullable: false,
     onDelete: 'CASCADE',
   })

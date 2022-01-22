@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import postController from '../controllers/post.controller';
 import Routers from '../interfaces/router.interface';
-import { auth } from '../middlewares/auth';
+import { auth, authForGuest } from '../middlewares/auth';
 
 class postRouter implements Routers {
   public path = '/posts';
@@ -12,7 +12,7 @@ class postRouter implements Routers {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, postController.getPost);
+    this.router.get(`${this.path}`, authForGuest, postController.getPost);
     this.router.post(`${this.path}`, auth, postController.createPost);
     this.router.post(`${this.path}/preview`, postController.previewImage);
     this.router.patch(`${this.path}/:id`, auth, postController.editPost);

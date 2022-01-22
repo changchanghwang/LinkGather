@@ -27,8 +27,13 @@ export class PostRepository extends AbstractRepository<Post> {
   findById(id: number) {
     return this.repository.findOne({ id });
   }
-  findAll() {
-    return this.repository.find({ order: { id: 'DESC' } });
+  findAll(user: number) {
+    return this.repository
+      .createQueryBuilder('posts')
+      .leftJoinAndSelect('posts.dibs', 'dibs', 'dibs.userId=:user', { user })
+      .leftJoinAndSelect('posts.likes', 'likes', 'likes.userId=:user', { user })
+      .orderBy('posts.id', 'DESC')
+      .getMany();
   }
 
   async updateOne(
@@ -38,11 +43,6 @@ export class PostRepository extends AbstractRepository<Post> {
     image: string,
     id: number
   ) {
-    // return this.createQueryBuilder('posts')
-    //   .update(this)
-    //   .set({ title, url, desc, image })
-    //   .where('id = :id', { id })
-    //   .execute();
     const post = await this.findById(id);
     post.url = url;
     post.title = title;

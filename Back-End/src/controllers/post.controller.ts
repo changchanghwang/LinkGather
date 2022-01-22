@@ -11,9 +11,9 @@ class postController {
   //게시글 뷰
   public getPost = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const user = res.locals.user;
       const postRepository = getCustomRepository(PostRepository);
-      const posts = await postRepository.findAll();
-      console.log(posts);
+      const posts = await postRepository.findAll(user);
       return res.status(200).json({ success: true, posts });
     } catch (err) {
       next(err);
@@ -79,6 +79,7 @@ class postController {
       const user = res.locals.user;
       const postRepository = getCustomRepository(PostRepository);
       const post = await postRepository.findByUserAndId(user, Number(id));
+      console.log(post);
       if (post) {
         await postRepository.deleteOne(Number(id));
         return res.status(200).json({ success: true });
@@ -126,12 +127,12 @@ class postController {
         await likeRepository.deleteOne(likeId);
         const likeNum = await likeRepository.countNum(Number(id));
         await postRepository.updateLikeNum(Number(id), likeNum);
-        res.status(200).json({ success: true, msg: '좋아요 취소' });
+        res.status(200).json({ success: true, msg: '좋아요 취소', likeNum });
       } else {
         await likeRepository.save(user, Number(id));
         const likeNum = await likeRepository.countNum(Number(id));
         await postRepository.updateLikeNum(Number(id), likeNum);
-        res.status(200).json({ success: true, msg: '좋아요 성공' });
+        res.status(200).json({ success: true, msg: '좋아요 성공', likeNum });
       }
     } catch (err) {
       next(err);
