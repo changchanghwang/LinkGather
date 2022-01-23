@@ -1,3 +1,7 @@
 import { createContext } from 'react';
 
-export const PostContext = createContext({ cards: [{}], setPost: async () => {} });
+export const PostContext = createContext({
+  cards: [{}],
+  setPost: async () => {},
+  updateLike: () => {},
+});

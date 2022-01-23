@@ -15,6 +15,7 @@ const Card = (props) => {
   //좋아요, 찜하기 state
   const [likes, setLikes] = useState(card?.likeNum);
   const [Dibs, setDibs] = useState(card?.dibs?.length ? true : false);
+
   //modal state
   const [open, setOpen] = useState(false);
 

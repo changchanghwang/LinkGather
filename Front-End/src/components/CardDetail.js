@@ -156,7 +156,7 @@ const DeleteButton = styled.button`
 const Image = styled.img`
   width: 100%;
   max-height: 300px;
-  margin-bottom: 20px;
+  margin: 20px 0;
   object-fit: cover;
 `;
 

@@ -3,12 +3,19 @@ import Header from '../components/Header';
 import CardList from '../components/CardList';
 import { PostContext } from '../contextAPI/posts';
 import { getPostApi } from '../axios/axios';
+import styled from 'styled-components';
 
 const Main = (props) => {
   const [cards, setCards] = useState([{}]);
+  const [loading, setLoading] = useState(false);
   const setPosts = async () => {
     const res = await getPostApi();
     setCards(res.data.posts);
+    setLoading(true);
+  };
+
+  const updateLike = (id) => {
+    const card = cards.filter((v, i) => v.id === id)[0];
   };
 
   useEffect(() => {
@@ -17,10 +24,21 @@ const Main = (props) => {
 
   return (
     <PostContext.Provider value={{ cards, setPosts }}>
-      <Header />
-      <CardList />
+      {loading ? (
+        <>
+          <Header />
+          <CardList />
+        </>
+      ) : (
+        <Spinner />
+      )}
     </PostContext.Provider>
   );
 };
+
+const Spinner = styled.img`
+  width: 100%;
+  height: 100%;
+`;
 
 export default Main;
