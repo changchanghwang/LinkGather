@@ -15,7 +15,7 @@ const Card = (props) => {
   //좋아요, 찜하기 state
   const [likes, setLikes] = useState(card?.likeNum);
   const [Dibs, setDibs] = useState(card?.dibs?.length ? true : false);
-
+  const [newCard, setNewCard] = useState(card);
   //modal state
   const [open, setOpen] = useState(false);
 
@@ -117,6 +117,7 @@ const Jjim = styled.button`
   justify-content: center;
   align-items: center;
   font-size: 8px;
+  cursor: pointer;
   filter: drop-shadow(rgba(41, 42, 43, 0.2) 0px 1px 3px)
     drop-shadow(rgba(0, 0, 0, 0.2) 0px 0px 0.5px);
   &:hover {

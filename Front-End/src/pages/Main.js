@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import CardList from '../components/CardList';
 import { PostContext } from '../contextAPI/posts';
 import { getPostApi } from '../axios/axios';
-import styled from 'styled-components';
+import Loader from 'react-spinners/PacmanLoader';
 
 const Main = (props) => {
   const [cards, setCards] = useState([{}]);
@@ -12,10 +12,6 @@ const Main = (props) => {
     const res = await getPostApi();
     setCards(res.data.posts);
     setLoading(true);
-  };
-
-  const updateLike = (id) => {
-    const card = cards.filter((v, i) => v.id === id)[0];
   };
 
   useEffect(() => {
@@ -30,15 +26,13 @@ const Main = (props) => {
           <CardList />
         </>
       ) : (
-        <Spinner />
+        <>
+          <Header />
+          <Loader css={{ position: 'absolute', top: '50%', left: '50%' }} />
+        </>
       )}
     </PostContext.Provider>
   );
 };
-
-const Spinner = styled.img`
-  width: 100%;
-  height: 100%;
-`;
 
 export default Main;

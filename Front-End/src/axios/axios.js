@@ -82,6 +82,18 @@ export const submitPostApi = async (data) => {
   }
 };
 
+export const editPostApi = async (id, data) => {
+  try {
+    return api.patch(`/posts/${id}`, {
+      url: data.url,
+      title: data.title,
+      desc: data.desc,
+    });
+  } catch (err) {
+    return err.response;
+  }
+};
+
 //추천하기 api
 export const likeApi = async (id) => {
   try {
@@ -95,6 +107,15 @@ export const likeApi = async (id) => {
 export const dibApi = async (id) => {
   try {
     return await api.post(`/posts/${id}/dib`);
+  } catch (err) {
+    return err.response;
+  }
+};
+
+//검색하기 api
+export const searchApi = async () => {
+  try {
+    return await api.get(``);
   } catch (err) {
     return err.response;
   }

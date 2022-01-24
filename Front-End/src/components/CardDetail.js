@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
+import { editPostApi, previewApi } from '../axios/axios';
 import Button from '../elements/Button';
 import CloseButton from '../elements/CloseButton';
 
@@ -8,9 +9,11 @@ const CardDetail = (props) => {
 
   //state
   const [editClick, setEditClick] = useState(false);
-  const [url, setUrl] = useState(null);
-  const [title, setTitle] = useState(null);
-  const [desc, setDesc] = useState(null);
+  const [url, setUrl] = useState(card.url);
+  const [title, setTitle] = useState(card.title);
+  const [desc, setDesc] = useState(card.desc);
+  const [preview, setPreview] = useState(card.image);
+  const [open, setOpen] = useState(true);
 
   //에러 state
   const [urlNull, setUrlNull] = useState(false);
@@ -43,7 +46,55 @@ const CardDetail = (props) => {
     setEditClick(!editClick);
   };
 
-  return (
+  //Preview onClick event
+  const getPreview = async () => {
+    if (!url) {
+      setUrlNull(true);
+      urlRef.current.focus();
+      return;
+    }
+    const res = await previewApi(url);
+    if (res.status === 200) {
+      setPreview(res.data.image);
+      setUrlNull(false);
+      setTitleNull(false);
+      setDescNull(false);
+    } else {
+      console.log(res);
+    }
+  };
+
+  //edit Post
+  const editPost = async (id) => {
+    const data = {
+      url,
+      title,
+      desc,
+    };
+    if (!url) {
+      setUrlNull(true);
+      urlRef.current.focus();
+      return;
+    }
+    if (!title) {
+      setTitleNull(true);
+      titleRef.current.focus();
+      return;
+    }
+    if (!desc) {
+      setDescNull(true);
+      descRef.current.focus();
+      return;
+    }
+    const res = await editPostApi(id, data);
+    if (res.status === 200) {
+      setOpen(false);
+    } else {
+      console.log(res);
+    }
+  };
+
+  return open ? (
     <GrayBackground className="handleModal" onClick={_onClick}>
       <PopUpWrap>
         <CloseButton />
@@ -57,7 +108,7 @@ const CardDetail = (props) => {
             </>
           )}
         </ButtonWrap>
-        <Image src={card?.image} alt="" />
+        <Image src={preview} alt="" />
         {editClick ? (
           <>
             <InputWrap>
@@ -67,8 +118,9 @@ const CardDetail = (props) => {
                   placeholder="https://www.linkgather.com"
                   ref={urlRef}
                   onChange={urlChange}
+                  value={url}
                 />
-                <Preview>이미지 미리보기</Preview>
+                <Preview onClick={getPreview}>이미지 미리보기</Preview>
               </div>
               {urlNull ? <ErrMessage>url을 입력해주세요</ErrMessage> : null}
             </InputWrap>
@@ -80,6 +132,7 @@ const CardDetail = (props) => {
                 placeholder="제목을 입력해주세요"
                 ref={titleRef}
                 onChange={titleChange}
+                value={title}
               />
               {titleNull ? <ErrMessage>제목을 입력해주세요</ErrMessage> : null}
             </InputWrap>
@@ -91,10 +144,13 @@ const CardDetail = (props) => {
                 placeholder="사이트에 대한 간략한 설명을 입력해주세요"
                 ref={descRef}
                 onChange={descChange}
+                value={desc}
               />
               {descNull ? <ErrMessage>간단한 설명을 입력해주세요</ErrMessage> : null}
             </InputWrap>
-            <Button isFill={false}>수정하기</Button>
+            <Button isFill={false} _onClick={() => editPost(card.id)}>
+              수정하기
+            </Button>
           </>
         ) : (
           <DetailWrap>
@@ -104,7 +160,7 @@ const CardDetail = (props) => {
         )}
       </PopUpWrap>
     </GrayBackground>
-  );
+  ) : null;
 };
 
 const GrayBackground = styled.div`

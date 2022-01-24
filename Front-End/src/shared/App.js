@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { UserContext } from '../contextAPI/users';
 import Main from '../pages/Main';
+import Search from '../pages/Search';
 import { isToken } from '../util/getToken';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
     <UserContext.Provider value={{ isLogin, setState }}>
       <Switch>
         <Route exact path="/" component={Main} />
+        <Route path="/search=:search" component={Search} />
       </Switch>
     </UserContext.Provider>
   );
