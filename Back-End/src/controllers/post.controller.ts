@@ -57,8 +57,14 @@ class postController {
           image =
             'https://user-images.githubusercontent.com/86486778/148679216-0d895bca-7499-4c67-9a80-93e295d7650c.png';
         }
-        await postRepository.updateOne(url, title, desc, image, Number(id));
-        return res.status(200).json({ success: true });
+        const newPost = await postRepository.updateOne(
+          url,
+          title,
+          desc,
+          image,
+          Number(id)
+        );
+        return res.status(200).json({ success: true, newPost });
       }
       return res
         .status(400)
@@ -156,6 +162,18 @@ class postController {
       } else {
         await dibRepository.save(user, Number(id));
         res.status(200).json({ success: true, msg: '찜하기 성공' });
+      }
+    } catch (err) {
+      next(err);
+    }
+  };
+  public search = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const words = req.query.words as string;
+      if (words) {
+        const postRepository = getCustomRepository(PostRepository);
+        const posts = await postRepository.search(words);
+        res.status(200).json({ success: true, posts });
       }
     } catch (err) {
       next(err);

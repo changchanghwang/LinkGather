@@ -5,6 +5,7 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  Index,
 } from 'typeorm';
 import { Dib } from './dib.entity';
 import { Like } from './like.entity';
@@ -15,11 +16,13 @@ export class Post {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Index({ fulltext: true })
   @Column({
     nullable: false,
   })
   title: string;
 
+  @Index({ fulltext: true })
   @Column({
     nullable: false,
   })

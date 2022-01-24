@@ -1,4 +1,8 @@
-import { EntityRepository, AbstractRepository } from 'typeorm';
+import {
+  EntityRepository,
+  AbstractRepository,
+  SelectQueryBuilder,
+} from 'typeorm';
 import { Post } from '../post.entity';
 
 @EntityRepository(Post)
@@ -49,6 +53,14 @@ export class PostRepository extends AbstractRepository<Post> {
     post.desc = desc;
     post.image = image;
     return this.manager.save(post);
+  }
+
+  search(words: string) {
+    return this.repository
+      .createQueryBuilder()
+      .select()
+      .where(`MATCH(title) AGAINST ('${words}' IN BOOLEAN MODE)`)
+      .getMany();
   }
 
   async updateLikeNum(id: number, likeNum: number) {
