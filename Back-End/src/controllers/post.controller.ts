@@ -20,6 +20,22 @@ class postController {
     }
   };
 
+  //마이페이지 뷰
+  public getMyPost = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const user: number = res.locals.user;
+      const postRepository = getCustomRepository(PostRepository);
+      const posts = await postRepository.findMyPost(user);
+      return res.status(200).json({ success: true, posts });
+    } catch (err) {
+      next(err);
+    }
+  };
+
   //게시글 작성
   public createPost = async (
     req: Request,
@@ -44,7 +60,7 @@ class postController {
         image,
         uploadTime
       );
-      res.status(200).json({ success: true });
+      return res.status(200).json({ success: true });
     } catch (err) {
       next(err);
     }
@@ -92,7 +108,6 @@ class postController {
       const user: number = res.locals.user;
       const postRepository = getCustomRepository(PostRepository);
       const post = await postRepository.findByUserAndId(user, Number(id));
-      console.log(post);
       if (post) {
         await postRepository.deleteOne(Number(id));
         return res.status(200).json({ success: true });
@@ -118,7 +133,7 @@ class postController {
         image =
           'https://user-images.githubusercontent.com/86486778/148679216-0d895bca-7499-4c67-9a80-93e295d7650c.png';
       }
-      res.status(200).json({ success: true, image });
+      return res.status(200).json({ success: true, image });
     } catch (err) {
       next(err);
     }
@@ -140,12 +155,16 @@ class postController {
         await likeRepository.deleteOne(likeId);
         const likeNum = await likeRepository.countNum(Number(id));
         await postRepository.updateLikeNum(Number(id), likeNum);
-        res.status(200).json({ success: true, msg: '좋아요 취소', likeNum });
+        return res
+          .status(200)
+          .json({ success: true, msg: '좋아요 취소', likeNum });
       } else {
         await likeRepository.save(user, Number(id));
         const likeNum = await likeRepository.countNum(Number(id));
         await postRepository.updateLikeNum(Number(id), likeNum);
-        res.status(200).json({ success: true, msg: '좋아요 성공', likeNum });
+        return res
+          .status(200)
+          .json({ success: true, msg: '좋아요 성공', likeNum });
       }
     } catch (err) {
       next(err);
@@ -165,15 +184,16 @@ class postController {
       if (dibExist) {
         const dibId = dibExist.id;
         await dibRepository.deleteOne(dibId);
-        res.status(200).json({ success: true, msg: '찜하기 취소' });
+        return res.status(200).json({ success: true, msg: '찜하기 취소' });
       } else {
         await dibRepository.save(user, Number(id));
-        res.status(200).json({ success: true, msg: '찜하기 성공' });
+        return res.status(200).json({ success: true, msg: '찜하기 성공' });
       }
     } catch (err) {
       next(err);
     }
   };
+
   //검색
   public search = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -181,11 +201,11 @@ class postController {
       const user: number = res.locals.user;
       const postRepository = getCustomRepository(PostRepository);
       if (words) {
-        const post = await postRepository.search(words, user);
-        res.status(200).json({ success: true, post });
+        const posts = await postRepository.search(words, user);
+        return res.status(200).json({ success: true, posts });
       } else {
-        const post = await postRepository.randomSearch();
-        res.status(200).json({ success: true, post });
+        const posts = await postRepository.randomSearch();
+        return res.status(200).json({ success: true, posts });
       }
     } catch (err) {
       next(err);

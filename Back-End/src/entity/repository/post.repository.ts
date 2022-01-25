@@ -7,6 +7,7 @@ import { Post } from '../post.entity';
 
 @EntityRepository(Post)
 export class PostRepository extends AbstractRepository<Post> {
+  //생성
   save(
     url: string,
     title: string,
@@ -25,21 +26,7 @@ export class PostRepository extends AbstractRepository<Post> {
     return this.manager.save(post);
   }
 
-  findByUserAndId(user: number, id: number) {
-    return this.repository.findOne({ user, id });
-  }
-  findById(id: number) {
-    return this.repository.findOne({ id });
-  }
-  findAll(user: number) {
-    return this.repository
-      .createQueryBuilder('posts')
-      .leftJoinAndSelect('posts.dibs', 'dibs', 'dibs.userId=:user', { user })
-      .leftJoinAndSelect('posts.likes', 'likes', 'likes.userId=:user', { user })
-      .orderBy('posts.id', 'DESC')
-      .getMany();
-  }
-
+  //수정
   async updateOne(
     url: string,
     title: string,
@@ -55,28 +42,53 @@ export class PostRepository extends AbstractRepository<Post> {
     return this.manager.save(post);
   }
 
-  search(words: string, user: number) {
-    return this.repository
-      .createQueryBuilder('posts')
-      .select()
-      .where(`MATCH(title) AGAINST ('${words}*' IN BOOLEAN MODE) `)
-      .orWhere(`MATCH(description) AGAINST ('${words}*' IN BOOLEAN MODE) `)
-      .leftJoinAndSelect('posts.dibs', 'dibs', 'dibs.userId=:user', { user })
-      .leftJoinAndSelect('posts.likes', 'likes', 'likes.userId=:user', { user })
-      .orderBy('id', 'DESC')
-      .getMany();
-  }
-
-  randomSearch() {
-    return this.repository.createQueryBuilder().orderBy('RAND()').getOne();
-  }
-
   async updateLikeNum(id: number, likeNum: number) {
     const post = await this.repository.findOne({ id });
     post.likeNum = likeNum;
     return this.manager.save(post);
   }
 
+  //찾기
+  findByUserAndId(user: number, id: number) {
+    return this.repository.findOne({ user, id });
+  }
+  findById(id: number) {
+    return this.repository.findOne({ id });
+  }
+  findAll(user: number) {
+    return this.repository
+      .createQueryBuilder('posts')
+      .leftJoinAndSelect('posts.dibs', 'dibs', 'dibs.userId=:user', { user })
+      .leftJoinAndSelect('posts.likes', 'likes', 'likes.userId=:user', { user })
+      .orderBy('posts.id', 'DESC')
+      .getMany();
+  }
+  findMyPost(user: number) {
+    return this.repository.find({ where: { user } });
+  }
+
+  //검색
+  search(words: string, user: number) {
+    return this.repository
+      .createQueryBuilder('posts')
+      .select()
+      .where(`MATCH(title) AGAINST ('*${words}*' IN BOOLEAN MODE) `)
+      .orWhere(`MATCH(description) AGAINST ('*${words}*' IN BOOLEAN MODE) `)
+      .leftJoinAndSelect('posts.dibs', 'dibs', 'dibs.userId=:user', { user })
+      .leftJoinAndSelect('posts.likes', 'likes', 'likes.userId=:user', { user })
+      .orderBy('posts.id', 'DESC')
+      .getMany();
+  }
+
+  randomSearch() {
+    return this.repository
+      .createQueryBuilder()
+      .orderBy('RAND()')
+      .limit(1)
+      .getMany();
+  }
+
+  //삭제
   deleteOne(id: number) {
     return this.repository.delete({ id });
   }
