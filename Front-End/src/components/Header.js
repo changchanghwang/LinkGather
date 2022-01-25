@@ -7,10 +7,8 @@ import PostModal from './PostModal';
 import SignUpModal from './SignUpModal';
 import { UserContext } from '../contextAPI/users';
 import { GrSearch } from 'react-icons/gr';
-import MyPageButton from '../elements/MyPage';
-import { searchApi } from '../axios/axios';
+import MyPageButton from '../elements/MyPageButton';
 import { useHistory } from 'react-router-dom';
-import { PostContext } from '../contextAPI/posts';
 
 const Header = (props) => {
   let { isLogin } = useContext(UserContext);
@@ -65,16 +63,6 @@ const Header = (props) => {
           </MemberBox>
         </Box>
       </Container>
-      <PostingContainer>
-        <PostingBox>
-          <div>
-            <Sort>최신순</Sort>
-            <span style={{ color: '#dee2e6', margin: '0px 10px' }}>|</span>
-            <Sort>추천순</Sort>
-          </div>
-          <PostModal />
-        </PostingBox>
-      </PostingContainer>
     </Head>
   );
 };
@@ -116,36 +104,11 @@ const MemberBox = styled.div`
   align-items: center;
 `;
 
-const PostingContainer = styled.div`
-  display: flex;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 60px;
-  z-index: 1;
-  background-color: #fff;
-  width: 100%;
-  border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 30px;
-`;
-
 const Box = styled.div`
   width: 1170px;
   margin: 0 auto;
   display: flex;
   align-items: center;
-`;
-
-const PostingBox = styled.div`
-  width: 1170px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const Sort = styled.span`
-  font-size: 12px;
-  cursor: pointer;
 `;
 
 export default Header;

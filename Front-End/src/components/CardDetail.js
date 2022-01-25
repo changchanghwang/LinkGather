@@ -1,8 +1,10 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { editPostApi, previewApi } from '../axios/axios';
+import { deletePostApi, editPostApi, previewApi } from '../axios/axios';
 import Button from '../elements/Button';
 import CloseButton from '../elements/CloseButton';
+import { BiEditAlt, BiArrowBack } from 'react-icons/bi';
+import { AiOutlineDelete } from 'react-icons/ai';
 
 const CardDetail = (props) => {
   const { _onClick, card } = props;
@@ -14,6 +16,7 @@ const CardDetail = (props) => {
   const [description, setDescription] = useState(card.description);
   const [preview, setPreview] = useState(card.image);
   const [open, setOpen] = useState(true);
+  const [del, setDel] = useState(false);
 
   //에러 state
   const [urlNull, setUrlNull] = useState(false);
@@ -94,71 +97,108 @@ const CardDetail = (props) => {
     }
   };
 
+  //delete modal
+  const delModal = (e) => {
+    setDel(!del);
+  };
+
+  //delete post
+  const deletePost = async (id) => {
+    const res = await deletePostApi(id);
+    if (res.status === 200) {
+      setOpen(false);
+    } else {
+      console.log(res);
+    }
+  };
+
   return open ? (
     <GrayBackground className="handleModal" onClick={_onClick}>
       <PopUpWrap>
         <CloseButton />
-        <ButtonWrap>
+        <OverFlowWrap>
+          <ButtonWrap editClick={editClick}>
+            {editClick ? (
+              <EditButton onClick={editLayout}>
+                <BiArrowBack />
+              </EditButton>
+            ) : (
+              <>
+                <EditButton onClick={editLayout}>
+                  <BiEditAlt />
+                </EditButton>
+                <DeleteButton className="handleDelModal" onClick={delModal}>
+                  <AiOutlineDelete className="handleDelModal" onClick={delModal} />
+                </DeleteButton>
+              </>
+            )}
+          </ButtonWrap>
+          <Image src={preview} alt="" />
           {editClick ? (
-            <EditButton onClick={editLayout}>수정 취소</EditButton>
-          ) : (
             <>
-              <EditButton onClick={editLayout}>수정</EditButton>
-              <DeleteButton>삭제</DeleteButton>
-            </>
-          )}
-        </ButtonWrap>
-        <Image src={preview} alt="" />
-        {editClick ? (
-          <>
-            <InputWrap>
-              <Label>웹 사이트 URL</Label>
-              <div style={{ display: 'flex' }}>
-                <PreviewInput
-                  placeholder="https://www.linkgather.com"
-                  ref={urlRef}
-                  onChange={urlChange}
-                  value={url}
+              <InputWrap>
+                <Label>웹 사이트 URL</Label>
+                <div style={{ display: 'flex' }}>
+                  <PreviewInput
+                    placeholder="https://www.linkgather.com"
+                    ref={urlRef}
+                    onChange={urlChange}
+                    value={url}
+                  />
+                  <Preview onClick={getPreview}>이미지 미리보기</Preview>
+                </div>
+                {urlNull ? <ErrMessage>url을 입력해주세요</ErrMessage> : null}
+              </InputWrap>
+
+              <InputWrap>
+                <Label>제목</Label>
+                <InputEl
+                  type="text"
+                  placeholder="제목을 입력해주세요"
+                  ref={titleRef}
+                  onChange={titleChange}
+                  value={title}
                 />
-                <Preview onClick={getPreview}>이미지 미리보기</Preview>
-              </div>
-              {urlNull ? <ErrMessage>url을 입력해주세요</ErrMessage> : null}
-            </InputWrap>
+                {titleNull ? <ErrMessage>제목을 입력해주세요</ErrMessage> : null}
+              </InputWrap>
 
-            <InputWrap>
-              <Label>제목</Label>
-              <InputEl
-                type="text"
-                placeholder="제목을 입력해주세요"
-                ref={titleRef}
-                onChange={titleChange}
-                value={title}
-              />
-              {titleNull ? <ErrMessage>제목을 입력해주세요</ErrMessage> : null}
-            </InputWrap>
-
-            <InputWrap>
-              <Label>설명</Label>
-              <Desc
-                type="text"
-                placeholder="사이트에 대한 간략한 설명을 입력해주세요"
-                ref={descRef}
-                onChange={descChange}
-                value={description}
-              />
-              {descNull ? <ErrMessage>간단한 설명을 입력해주세요</ErrMessage> : null}
-            </InputWrap>
-            <Button isFill={false} _onClick={() => editPost(card.id)}>
-              수정하기
-            </Button>
-          </>
-        ) : (
-          <DetailWrap>
-            <p>{card?.title}</p>
-            <span>{card?.description}</span>
-          </DetailWrap>
-        )}
+              <InputWrap>
+                <Label>설명</Label>
+                <Description
+                  type="text"
+                  placeholder="사이트에 대한 간략한 설명을 입력해주세요"
+                  ref={descRef}
+                  onChange={descChange}
+                  value={description}
+                />
+                {descNull ? <ErrMessage>간단한 설명을 입력해주세요</ErrMessage> : null}
+              </InputWrap>
+              <Button isFill={false} _onClick={() => editPost(card.id)}>
+                수정하기
+              </Button>
+            </>
+          ) : (
+            <DetailWrap>
+              <p>{card?.title}</p>
+              <span>{card?.description}</span>
+            </DetailWrap>
+          )}
+        </OverFlowWrap>
       </PopUpWrap>
+
+      {del ? (
+        <DelModalWrap>
+          <DelQ>
+            삭제하시겠습니까?
+            <div>
+              <span onClick={() => deletePost(card?.id)}>예</span>
+              <span style={{ marginLeft: '10px' }} className="handleDelModal" onClick={delModal}>
+                아니오
+              </span>
+            </div>
+          </DelQ>
+        </DelModalWrap>
+      ) : null}
     </GrayBackground>
   ) : null;
 };
@@ -175,38 +215,66 @@ const GrayBackground = styled.div`
 
 const PopUpWrap = styled.div`
   position: absolute;
-  top: 50%;
+  top: 47%;
   left: 50%;
   transform: translate(-50%, -50%);
-  max-height: 650px;
-  z-index: 10;
-  width: 520px;
+  z-index: 11;
   padding: 30px 40px;
+  width: 520px;
   background-color: #fff;
+  border-radius: 5px;
+`;
+
+const OverFlowWrap = styled.div`
+  max-height: 450px;
+  ::-webkit-scrollbar {
+    display: none;
+  }
   overflow-y: scroll;
 `;
 
 const ButtonWrap = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: ${(props) => (props.editClick ? 'flex-start' : 'flex-end')};
   align-items: center;
 `;
 
 const EditButton = styled.button`
-  color: #339af0;
-  border: 1px solid #339af0;
+  border: 0;
   cursor: pointer;
-  padding: 8px 12px;
+  font-size: 20px;
   background-color: transparent;
 `;
 
 const DeleteButton = styled.button`
-  color: #ff6b6b;
-  border: 1px solid #ff6b6b;
+  font-size: 20px;
+  border: 0;
   cursor: pointer;
   background-color: transparent;
-  margin-left: 15px;
-  padding: 8px 12px;
+  margin-left: 10px;
+`;
+
+const DelModalWrap = styled.div`
+  position: absolute;
+  top: 72%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 12;
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 540px;
+  padding: 30px 30px;
+  background-color: #fff;
+`;
+
+const DelQ = styled.div`
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  & span {
+    cursor: pointer;
+  }
 `;
 
 const Image = styled.img`
@@ -252,7 +320,7 @@ const InputEl = styled.input`
   width: 498px;
 `;
 
-const Desc = styled.textarea`
+const Description = styled.textarea`
   padding: 15px 10px;
   border: 1px solid #dee2e6;
   border-radius: 3px;
@@ -263,7 +331,7 @@ const Desc = styled.textarea`
 
 const ErrMessage = styled.span`
   font-size: 0.6em;
-  color: rgb(226, 91, 69);
+  color: #ff6b6b;
 `;
 
 const DetailWrap = styled.div`
@@ -273,6 +341,7 @@ const DetailWrap = styled.div`
     font-weight: bold;
     letter-spacing: -0.6px;
   }
+  word-break: break-all;
 `;
 
 export default CardDetail;

@@ -177,7 +177,7 @@ const InputEl = styled.input`
 
 const ErrMessage = styled.span`
   font-size: 0.6em;
-  color: rgb(226, 91, 69);
+  color: #ff6b6b;
 `;
 
 export default LoginModal;

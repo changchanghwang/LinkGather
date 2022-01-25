@@ -5,6 +5,7 @@ import Loader from 'react-spinners/PacmanLoader';
 import { searchApi } from '../axios/axios';
 import { PostContext } from '../contextAPI/posts';
 import { useHistory } from 'react-router-dom';
+import NavBar from '../components/NavBar';
 
 const Search = (props) => {
   const [cards, setCards] = useState([{}]);
@@ -26,17 +27,9 @@ const Search = (props) => {
 
   return (
     <PostContext.Provider value={{ cards, setPosts }}>
-      {loading ? (
-        <>
-          <Header />
-          <CardList />
-        </>
-      ) : (
-        <>
-          <Header />
-          <Loader css={{ position: 'absolute', top: '50%', left: '50%' }} />
-        </>
-      )}
+      <Header />
+      <NavBar searched={true} />
+      {loading ? <CardList /> : <Loader css={{ position: 'absolute', top: '50%', left: '50%' }} />}
     </PostContext.Provider>
   );
 };

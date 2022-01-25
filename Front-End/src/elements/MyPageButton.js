@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const MyPageButton = (props) => {
   const history = useHistory();
   const toMyPage = () => {
-    history.push(`/mypage/:id`);
+    history.push(`/mypage`);
   };
   return <MyButton onClick={toMyPage}>내 작성글 보기</MyButton>;
 };

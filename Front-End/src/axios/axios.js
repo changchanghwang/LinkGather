@@ -69,6 +69,15 @@ export const getPostApi = async () => {
   }
 };
 
+//마이페이지 뷰 api
+export const getMyPostApi = async () => {
+  try {
+    return await api.get(`/posts/mypage`);
+  } catch (err) {
+    return err.response;
+  }
+};
+
 //포스트 등록 api
 export const submitPostApi = async (data) => {
   try {
@@ -82,6 +91,7 @@ export const submitPostApi = async (data) => {
   }
 };
 
+//포스트 수정 api
 export const editPostApi = async (id, data) => {
   try {
     return api.patch(`/posts/${id}`, {
@@ -116,6 +126,15 @@ export const dibApi = async (id) => {
 export const searchApi = async (words) => {
   try {
     return await api.get(`/posts/search?words=${words}`);
+  } catch (err) {
+    return err.response;
+  }
+};
+
+//삭제하기 api
+export const deletePostApi = async (id) => {
+  try {
+    return await api.delete(`/posts/${id}`);
   } catch (err) {
     return err.response;
   }

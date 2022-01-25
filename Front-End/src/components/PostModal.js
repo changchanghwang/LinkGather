@@ -16,6 +16,7 @@ const PostModal = (props) => {
   const [title, setTitle] = useState(null);
   const [description, setDescription] = useState(null);
   const [preview, setPreview] = useState(null);
+  console.log(preview);
 
   //에러 state
   const [urlNull, setUrlNull] = useState(false);
@@ -173,7 +174,7 @@ const PostModal = (props) => {
 
               <InputWrap>
                 <Label>설명</Label>
-                <description
+                <Description
                   type="text"
                   placeholder="사이트에 대한 간략한 설명을 입력해주세요"
                   ref={descriptionRef}
@@ -258,7 +259,7 @@ const InputEl = styled.input`
   width: 498px;
 `;
 
-const description = styled.textarea`
+const Description = styled.textarea`
   padding: 15px 10px;
   border: 1px solid #dee2e6;
   border-radius: 3px;
@@ -269,7 +270,7 @@ const description = styled.textarea`
 
 const ErrMessage = styled.span`
   font-size: 0.6em;
-  color: rgb(226, 91, 69);
+  color: #ff6b6b;
 `;
 
 export default PostModal;

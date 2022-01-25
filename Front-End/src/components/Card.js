@@ -39,6 +39,11 @@ const Card = (props) => {
 
   const handleDetailModal = (e) => {
     if (e.target?.className?.includes('handleModal')) {
+      if (open) {
+        document.body.style.overflow = 'unset';
+      } else {
+        document.body.style.overflow = 'hidden';
+      }
       setOpen(!open);
     }
   };
