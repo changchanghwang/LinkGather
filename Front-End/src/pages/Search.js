@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CardList from '../components/CardList';
 import Header from '../components/Header';
-import Loader from 'react-spinners/PacmanLoader';
+import Loader from 'react-spinners/SyncLoader';
 import { searchApi } from '../axios/axios';
 import { PostContext } from '../contextAPI/posts';
 import { useHistory } from 'react-router-dom';

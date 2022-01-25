@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import CardList from '../components/CardList';
 import { PostContext } from '../contextAPI/posts';
 import { getPostApi } from '../axios/axios';
-import Loader from 'react-spinners/PacmanLoader';
+import Loader from 'react-spinners/SyncLoader';
 import NavBar from '../components/NavBar';
 
 const Main = (props) => {

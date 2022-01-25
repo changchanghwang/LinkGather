@@ -1,9 +1,8 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useRef } from 'react';
 import styled from 'styled-components';
 import Logo from '../elements/Logo';
 import Logout from '../elements/LogoutButton';
 import LoginModal from './LoginModal';
-import PostModal from './PostModal';
 import SignUpModal from './SignUpModal';
 import { UserContext } from '../contextAPI/users';
 import { GrSearch } from 'react-icons/gr';

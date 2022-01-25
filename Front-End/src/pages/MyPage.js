@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Loader from 'react-spinners/PacmanLoader';
+import Loader from 'react-spinners/SyncLoader';
 import styled from 'styled-components';
 import { getMyPostApi } from '../axios/axios';
 import CardList from '../components/CardList';
