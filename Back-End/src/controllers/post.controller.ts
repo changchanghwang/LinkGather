@@ -27,7 +27,7 @@ class postController {
     next: NextFunction
   ) => {
     try {
-      const { url, title, desc }: postInput = req.body;
+      const { url, title, description }: postInput = req.body;
       const user: number = res.locals.user;
       const postRepository = getCustomRepository(PostRepository);
       let image = await crawling(url);
@@ -36,7 +36,14 @@ class postController {
           'https://user-images.githubusercontent.com/86486778/148642786-552a0da0-06e2-4a19-bf5c-17a28e184ded.png';
       }
       const uploadTime = moment().format('YYYY-MM-DD');
-      await postRepository.save(url, title, desc, user, image, uploadTime);
+      await postRepository.save(
+        url,
+        title,
+        description,
+        user,
+        image,
+        uploadTime
+      );
       res.status(200).json({ success: true });
     } catch (err) {
       next(err);
@@ -47,8 +54,8 @@ class postController {
   public editPost = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-      const { url, title, desc } = req.body;
-      const user = res.locals.user;
+      const { url, title, description } = req.body;
+      const user: number = res.locals.user;
       const postRepository = getCustomRepository(PostRepository);
       const post = await postRepository.findByUserAndId(user, Number(id));
       if (post) {
@@ -60,7 +67,7 @@ class postController {
         const newPost = await postRepository.updateOne(
           url,
           title,
-          desc,
+          description,
           image,
           Number(id)
         );
@@ -82,7 +89,7 @@ class postController {
   ) => {
     try {
       const { id } = req.params;
-      const user = res.locals.user;
+      const user: number = res.locals.user;
       const postRepository = getCustomRepository(PostRepository);
       const post = await postRepository.findByUserAndId(user, Number(id));
       console.log(post);
@@ -121,7 +128,7 @@ class postController {
   public like = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-      const user = res.locals.user;
+      const user: number = res.locals.user;
       const likeRepository = getCustomRepository(LikeRepository);
       const postRepository = getCustomRepository(PostRepository);
       const likeExist = await likeRepository.findByUserAndPostId(
@@ -149,7 +156,7 @@ class postController {
   public dib = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-      const user = res.locals.user;
+      const user: number = res.locals.user;
       const dibRepository = getCustomRepository(DibRepository);
       const dibExist = await dibRepository.findByUserAndPostId(
         user,
@@ -167,13 +174,18 @@ class postController {
       next(err);
     }
   };
+  //검색
   public search = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const words = req.query.words as string;
+      const user: number = res.locals.user;
+      const postRepository = getCustomRepository(PostRepository);
       if (words) {
-        const postRepository = getCustomRepository(PostRepository);
-        const posts = await postRepository.search(words);
-        res.status(200).json({ success: true, posts });
+        const post = await postRepository.search(words, user);
+        res.status(200).json({ success: true, post });
+      } else {
+        const post = await postRepository.randomSearch();
+        res.status(200).json({ success: true, post });
       }
     } catch (err) {
       next(err);

@@ -19,14 +19,16 @@ export class Post {
   @Index({ fulltext: true })
   @Column({
     nullable: false,
+    type: 'varchar',
   })
   title: string;
 
   @Index({ fulltext: true })
   @Column({
     nullable: false,
+    type: 'text',
   })
-  desc: string;
+  description: string;
 
   @Column({
     nullable: false,

@@ -10,7 +10,7 @@ export class PostRepository extends AbstractRepository<Post> {
   save(
     url: string,
     title: string,
-    desc: string,
+    description: string,
     user: number,
     image: string,
     uploadTime: string
@@ -18,7 +18,7 @@ export class PostRepository extends AbstractRepository<Post> {
     const post = new Post();
     post.url = url;
     post.title = title;
-    post.desc = desc;
+    post.description = description;
     post.user = user;
     post.image = image;
     post.uploadTime = uploadTime;
@@ -43,24 +43,32 @@ export class PostRepository extends AbstractRepository<Post> {
   async updateOne(
     url: string,
     title: string,
-    desc: string,
+    description: string,
     image: string,
     id: number
   ) {
     const post = await this.findById(id);
     post.url = url;
     post.title = title;
-    post.desc = desc;
+    post.description = description;
     post.image = image;
     return this.manager.save(post);
   }
 
-  search(words: string) {
+  search(words: string, user: number) {
     return this.repository
-      .createQueryBuilder()
+      .createQueryBuilder('posts')
       .select()
-      .where(`MATCH(title) AGAINST ('${words}' IN BOOLEAN MODE)`)
+      .where(`MATCH(title) AGAINST ('${words}*' IN BOOLEAN MODE) `)
+      .orWhere(`MATCH(description) AGAINST ('${words}*' IN BOOLEAN MODE) `)
+      .leftJoinAndSelect('posts.dibs', 'dibs', 'dibs.userId=:user', { user })
+      .leftJoinAndSelect('posts.likes', 'likes', 'likes.userId=:user', { user })
+      .orderBy('id', 'DESC')
       .getMany();
+  }
+
+  randomSearch() {
+    return this.repository.createQueryBuilder().orderBy('RAND()').getOne();
   }
 
   async updateLikeNum(id: number, likeNum: number) {

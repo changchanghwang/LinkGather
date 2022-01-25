@@ -15,7 +15,7 @@ class postRouter implements Routers {
     this.router.get(`${this.path}`, authForGuest, postController.getPost);
     this.router.post(`${this.path}`, auth, postController.createPost);
     this.router.get(`${this.path}/search`, authForGuest, postController.search);
-    this.router.post(`${this.path}/preview`, postController.previewImage);
+    this.router.post(`${this.path}/preview`, auth, postController.previewImage);
     this.router.patch(`${this.path}/:id`, auth, postController.editPost);
     this.router.delete(`${this.path}/:id`, auth, postController.deletePost);
     this.router.post(`${this.path}/:id/like`, auth, postController.like);

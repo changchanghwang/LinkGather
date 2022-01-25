@@ -1,5 +1,5 @@
 interface postInput {
   url: string;
   title: string;
-  desc: string;
+  description: string;
 }
