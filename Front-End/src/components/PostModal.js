@@ -14,13 +14,13 @@ const PostModal = (props) => {
   //포스트 정보 state
   const [url, setUrl] = useState(null);
   const [title, setTitle] = useState(null);
-  const [desc, setDesc] = useState(null);
+  const [description, setDescription] = useState(null);
   const [preview, setPreview] = useState(null);
 
   //에러 state
   const [urlNull, setUrlNull] = useState(false);
   const [titleNull, setTitleNull] = useState(false);
-  const [descNull, setDescNull] = useState(false);
+  const [descriptionNull, setDescriptionNull] = useState(false);
 
   //context api
   const { isLogin } = useContext(UserContext);
@@ -29,7 +29,7 @@ const PostModal = (props) => {
   //ref
   const urlRef = useRef();
   const titleRef = useRef();
-  const descRef = useRef();
+  const descriptionRef = useRef();
 
   //input onChange event
   const urlChange = (e) => {
@@ -42,9 +42,9 @@ const PostModal = (props) => {
     setTitle(TITLE);
   };
 
-  const descChange = (e) => {
-    const DESC = e.target.value;
-    setDesc(DESC);
+  const descriptionChange = (e) => {
+    const description = e.target.value;
+    setDescription(description);
   };
 
   //modal controll
@@ -53,11 +53,11 @@ const PostModal = (props) => {
       setOpen(!open);
       setUrl(null);
       setTitle(null);
-      setDesc(null);
+      setDescription(null);
       setPreview(null);
       setUrlNull(false);
       setTitleNull(false);
-      setDescNull(false);
+      setDescriptionNull(false);
     } else if (!isLogin) {
       alert('로그인 해주세요');
     }
@@ -75,7 +75,7 @@ const PostModal = (props) => {
       setPreview(res.data.image);
       setUrlNull(false);
       setTitleNull(false);
-      setDescNull(false);
+      setDescriptionNull(false);
     } else {
       console.log(res);
     }
@@ -86,27 +86,27 @@ const PostModal = (props) => {
     const data = {
       url,
       title,
-      desc,
+      description,
     };
     if (!url) {
       setUrlNull(true);
       setTitleNull(false);
-      setDescNull(false);
+      setDescriptionNull(false);
       urlRef.current.focus();
       return;
     }
     if (!title) {
       setUrlNull(false);
       setTitleNull(true);
-      setDescNull(false);
+      setDescriptionNull(false);
       titleRef.current.focus();
       return;
     }
-    if (!desc) {
+    if (!description) {
       setUrlNull(false);
       setTitleNull(false);
-      setDescNull(true);
-      descRef.current.focus();
+      setDescriptionNull(true);
+      descriptionRef.current.focus();
       return;
     }
     const res = await submitPostApi(data);
@@ -115,11 +115,11 @@ const PostModal = (props) => {
       setOpen(false);
       setUrl(null);
       setTitle(null);
-      setDesc(null);
+      setDescription(null);
       setPreview(null);
       setUrlNull(false);
       setTitleNull(false);
-      setDescNull(false);
+      setDescriptionNull(false);
       await setPosts();
     } else {
       console.log(res);
@@ -173,13 +173,13 @@ const PostModal = (props) => {
 
               <InputWrap>
                 <Label>설명</Label>
-                <Desc
+                <description
                   type="text"
                   placeholder="사이트에 대한 간략한 설명을 입력해주세요"
-                  ref={descRef}
-                  onChange={descChange}
+                  ref={descriptionRef}
+                  onChange={descriptionChange}
                 />
-                {descNull ? <ErrMessage>간단한 설명을 입력해주세요</ErrMessage> : null}
+                {descriptionNull ? <ErrMessage>간단한 설명을 입력해주세요</ErrMessage> : null}
               </InputWrap>
               <Button isFill={false} _onClick={submitPost}>
                 등록하기
@@ -258,7 +258,7 @@ const InputEl = styled.input`
   width: 498px;
 `;
 
-const Desc = styled.textarea`
+const description = styled.textarea`
   padding: 15px 10px;
   border: 1px solid #dee2e6;
   border-radius: 3px;

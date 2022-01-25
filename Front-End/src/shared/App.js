@@ -15,7 +15,7 @@ function App() {
     <UserContext.Provider value={{ isLogin, setState }}>
       <Switch>
         <Route exact path="/" component={Main} />
-        <Route path="/search=:search" component={Search} />
+        <Route path="/search" component={Search} />
       </Switch>
     </UserContext.Provider>
   );

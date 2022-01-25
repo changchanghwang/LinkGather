@@ -1,23 +1,55 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Logo from '../elements/Logo';
 import Logout from '../elements/LogoutButton';
-import SearchInput from '../elements/SearchInput';
 import LoginModal from './LoginModal';
 import PostModal from './PostModal';
 import SignUpModal from './SignUpModal';
 import { UserContext } from '../contextAPI/users';
+import { GrSearch } from 'react-icons/gr';
 import MyPageButton from '../elements/MyPage';
+import { searchApi } from '../axios/axios';
+import { useHistory } from 'react-router-dom';
+import { PostContext } from '../contextAPI/posts';
 
 const Header = (props) => {
   let { isLogin } = useContext(UserContext);
+
+  //ref
+  const searchRef = useRef();
+
+  //useHistroy
+  const history = useHistory();
+
+  //search
+  const search = () => {
+    if (history.location.pathname === '/search') {
+      window.location.replace(`/search?words=${searchRef.current.value}`);
+    } else {
+      history.push(`/search?words=${searchRef.current.value}`);
+    }
+  };
+
+  const enterSearch = (e) => {
+    if (e.key === 'Enter') {
+      search();
+    }
+  };
 
   return (
     <Head>
       <Container>
         <Box>
           <Logo />
-          <SearchInput />
+          <SearchInput
+            type="text"
+            placeholder="검색어 입력"
+            ref={searchRef}
+            onKeyPress={enterSearch}
+          />
+          <SearchIcon onClick={search}>
+            <GrSearch />
+          </SearchIcon>
           <MemberBox>
             {isLogin ? (
               <>
@@ -61,6 +93,19 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   background-color: #000;
+`;
+
+const SearchInput = styled.input`
+  width: 260px;
+  height: 34px;
+  padding-left: 20px;
+  outline: none;
+  border-radius: 22px;
+`;
+
+const SearchIcon = styled.div`
+  margin-left: -30px;
+  cursor: pointer;
 `;
 
 const MemberBox = styled.div`

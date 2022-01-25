@@ -75,7 +75,7 @@ export const submitPostApi = async (data) => {
     return api.post('/posts', {
       url: data.url,
       title: data.title,
-      desc: data.desc,
+      description: data.description,
     });
   } catch (err) {
     return err.response;
@@ -87,7 +87,7 @@ export const editPostApi = async (id, data) => {
     return api.patch(`/posts/${id}`, {
       url: data.url,
       title: data.title,
-      desc: data.desc,
+      description: data.description,
     });
   } catch (err) {
     return err.response;
@@ -113,9 +113,9 @@ export const dibApi = async (id) => {
 };
 
 //검색하기 api
-export const searchApi = async () => {
+export const searchApi = async (words) => {
   try {
-    return await api.get(``);
+    return await api.get(`/posts/search?words=${words}`);
   } catch (err) {
     return err.response;
   }

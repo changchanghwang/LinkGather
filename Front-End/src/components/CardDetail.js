@@ -11,14 +11,14 @@ const CardDetail = (props) => {
   const [editClick, setEditClick] = useState(false);
   const [url, setUrl] = useState(card.url);
   const [title, setTitle] = useState(card.title);
-  const [desc, setDesc] = useState(card.desc);
+  const [description, setDescription] = useState(card.description);
   const [preview, setPreview] = useState(card.image);
   const [open, setOpen] = useState(true);
 
   //에러 state
   const [urlNull, setUrlNull] = useState(false);
   const [titleNull, setTitleNull] = useState(false);
-  const [descNull, setDescNull] = useState(false);
+  const [descNull, setDescriptionNull] = useState(false);
 
   //ref
   const urlRef = useRef();
@@ -38,7 +38,7 @@ const CardDetail = (props) => {
 
   const descChange = (e) => {
     const DESC = e.target.value;
-    setDesc(DESC);
+    setDescription(DESC);
   };
 
   //edit layout
@@ -58,7 +58,7 @@ const CardDetail = (props) => {
       setPreview(res.data.image);
       setUrlNull(false);
       setTitleNull(false);
-      setDescNull(false);
+      setDescriptionNull(false);
     } else {
       console.log(res);
     }
@@ -69,7 +69,7 @@ const CardDetail = (props) => {
     const data = {
       url,
       title,
-      desc,
+      description,
     };
     if (!url) {
       setUrlNull(true);
@@ -81,8 +81,8 @@ const CardDetail = (props) => {
       titleRef.current.focus();
       return;
     }
-    if (!desc) {
-      setDescNull(true);
+    if (!description) {
+      setDescriptionNull(true);
       descRef.current.focus();
       return;
     }
@@ -144,7 +144,7 @@ const CardDetail = (props) => {
                 placeholder="사이트에 대한 간략한 설명을 입력해주세요"
                 ref={descRef}
                 onChange={descChange}
-                value={desc}
+                value={description}
               />
               {descNull ? <ErrMessage>간단한 설명을 입력해주세요</ErrMessage> : null}
             </InputWrap>
@@ -155,7 +155,7 @@ const CardDetail = (props) => {
         ) : (
           <DetailWrap>
             <p>{card?.title}</p>
-            <span>{card?.desc}</span>
+            <span>{card?.description}</span>
           </DetailWrap>
         )}
       </PopUpWrap>
