@@ -1,13 +1,15 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { deletePostApi, editPostApi, previewApi } from '../axios/axios';
 import Button from '../elements/Button';
 import CloseButton from '../elements/CloseButton';
 import { BiEditAlt, BiArrowBack } from 'react-icons/bi';
 import { AiOutlineDelete } from 'react-icons/ai';
+import { PostContext } from '../contextAPI/posts';
 
 const CardDetail = (props) => {
   const { _onClick, card } = props;
+  const { setPosts } = useContext(PostContext);
 
   //state
   const [editClick, setEditClick] = useState(false);
@@ -92,6 +94,7 @@ const CardDetail = (props) => {
     const res = await editPostApi(id, data);
     if (res.status === 200) {
       setOpen(false);
+      await setPosts();
     } else {
       console.log(res);
     }
@@ -107,6 +110,7 @@ const CardDetail = (props) => {
     const res = await deletePostApi(id);
     if (res.status === 200) {
       setOpen(false);
+      await setPosts();
     } else {
       console.log(res);
     }

@@ -13,7 +13,9 @@ const Card = (props) => {
   const { card } = props;
   const { isLogin } = useContext(UserContext);
   //좋아요, 찜하기 state
+  console.log('라이크넘', card.likeNum);
   const [likes, setLikes] = useState(card?.likeNum);
+  console.log('라이크', likes);
   const [Dibs, setDibs] = useState(card?.dibs?.length ? true : false);
   //modal state
   const [open, setOpen] = useState(false);

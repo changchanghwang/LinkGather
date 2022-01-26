@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { PostContext } from '../contextAPI/posts';
@@ -6,9 +6,30 @@ import PostModal from './PostModal';
 
 const NavBar = (props) => {
   const { searched } = props;
+  const { cards, sortPosts, setPosts } = useContext(PostContext);
+
   const history = useHistory();
-  const { cards } = useContext(PostContext);
   const searchWord = history.location.search.split('=')[1];
+
+  //sort state
+  const [sortedRecent, setSortedRecent] = useState(true);
+  const [sortedRecomend, setSortedRecomend] = useState(false);
+
+  const sortRecent = async () => {
+    if (!sortedRecent) {
+      await setPosts();
+      setSortedRecent(true);
+      setSortedRecomend(false);
+    }
+  };
+
+  const sortRecomend = async () => {
+    if (!sortedRecomend) {
+      await sortPosts();
+      setSortedRecent(false);
+      setSortedRecomend(true);
+    }
+  };
 
   return (
     <PostingContainer>
@@ -25,9 +46,21 @@ const NavBar = (props) => {
           </WordWrap>
         ) : (
           <div>
-            <Sort>최신순</Sort>
+            {sortedRecent ? (
+              <Sort click={true} onClick={sortRecent}>
+                최신순
+              </Sort>
+            ) : (
+              <Sort onClick={sortRecent}>최신순</Sort>
+            )}
             <span style={{ color: '#dee2e6', margin: '0px 10px' }}>|</span>
-            <Sort>추천순</Sort>
+            {sortedRecomend ? (
+              <Sort click={true} onClick={sortRecomend}>
+                추천순
+              </Sort>
+            ) : (
+              <Sort onClick={sortRecomend}>추천순</Sort>
+            )}
           </div>
         )}
         <PostModal />
@@ -58,6 +91,20 @@ const PostingBox = styled.div`
 const Sort = styled.span`
   font-size: 12px;
   cursor: pointer;
+  &:hover {
+    animation: fade 1s;
+    @keyframes fade {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    color: #339af0;
+  }
+
+  color: ${(props) => (props.click ? '#339af0' : 'black')};
 `;
 
 const WordWrap = styled.span`

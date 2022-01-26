@@ -69,6 +69,15 @@ export const getPostApi = async () => {
   }
 };
 
+//추천순 뷰 api
+export const getPostSortApi = async () => {
+  try {
+    return await api.get('/posts/sort');
+  } catch (err) {
+    return err.response;
+  }
+};
+
 //마이페이지 뷰 api
 export const getMyPostApi = async () => {
   try {
