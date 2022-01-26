@@ -66,6 +66,15 @@ export class PostRepository extends AbstractRepository<Post> {
   findMyPost(user: number) {
     return this.repository.find({ where: { user } });
   }
+  findAllSortLike(user: number) {
+    return this.repository
+      .createQueryBuilder('posts')
+      .leftJoinAndSelect('posts.dibs', 'dibs', 'dibs.userId=:user', { user })
+      .leftJoinAndSelect('posts.likes', 'likes', 'likes.userId=:user', { user })
+      .orderBy('posts.likeNum', 'DESC')
+      .addOrderBy('posts.id', 'DESC')
+      .getMany();
+  }
 
   //검색
   search(words: string, user: number) {

@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import * as moment from 'moment';
 import { getCustomRepository, getRepository } from 'typeorm';
-import { Dib } from '../entity/dib.entity';
 import { PostRepository } from '../entity/repository/post.repository';
 import { LikeRepository } from '../entity/repository/like.repository';
 import { DibRepository } from '../entity/repository/dib.repository';
@@ -15,6 +14,22 @@ class postController {
       const postRepository = getCustomRepository(PostRepository);
       const posts = await postRepository.findAll(user);
       return res.status(200).json({ success: true, posts });
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  //추천순 정렬
+  public getPostSorted = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const user = res.locals.user;
+      const postRepository = getCustomRepository(PostRepository);
+      const posts = await postRepository.findAllSortLike(user);
+      return res.status(200).json({ succes: true, posts });
     } catch (err) {
       next(err);
     }
