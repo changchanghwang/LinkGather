@@ -4,7 +4,7 @@ import { BsFillChatFill } from 'react-icons/bs';
 
 function Kakao(props) {
   const a = () => {
-    window.open('http://localhost:3001/users/kakao');
+    window.location.href = 'http://localhost:3001/users/kakao';
   };
   return (
     <Kbutton onClick={a}>

@@ -13,6 +13,11 @@ class userRouter implements Routers {
   private initializeRoutes() {
     this.router.post(`${this.path}/signup`, userController.signUp);
     this.router.post(`${this.path}/signin`, userController.signIn);
+    this.router.get(`${this.path}/kakao`, userController.kakaoLogin);
+    this.router.get(
+      `${this.path}/kakao/callback`,
+      userController.kakaoLoginCallback
+    );
   }
 }
 

@@ -5,20 +5,20 @@ import * as helmet from 'helmet';
 import * as compression from 'compression';
 import * as passport from 'passport';
 import * as cors from 'cors';
-import { localSignIn } from './passport/localStrategy';
 import Routers from './interfaces/router.interface';
 import indexRouter from './routes';
 import userRouter from './routes/user';
 import postRouter from './routes/post';
 import { errorHandler } from './middlewares/errorHandler';
+import { passportStrategy } from './passport/strategy';
 class Server {
   public app: express.Application;
 
   constructor(routers: Routers[]) {
     this.app = express();
     this.connectDatabase();
-    this.middleware();
     this.passportAuth();
+    this.middleware();
     this.initializeRouter(routers);
     this.errorHandleMiddleware();
   }
@@ -48,7 +48,7 @@ class Server {
 
   private passportAuth() {
     this.app.use(passport.initialize());
-    localSignIn();
+    passportStrategy();
   }
 
   private errorHandleMiddleware() {

@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import { getCustomRepository, getRepository } from 'typeorm';
+import { getCustomRepository } from 'typeorm';
 import { UserRepository } from '../entity/repository/user.repository';
 import * as bcrypt from 'bcrypt';
 import 'dotenv/config';
 const salt = Number(process.env.SALT);
-import passport = require('passport');
+import * as passport from 'passport';
 import { generateToken } from '../utils/tokenGenerator';
 import { User } from '../entity/user.entity';
 import { validateEmail } from '../utils/emailValidator';
@@ -59,7 +59,24 @@ class userController {
         const token = generateToken(user.id);
         return res.status(200).json({ success: true, token });
       });
-    })(req, res);
+    })(req, res, next);
+  };
+
+  public kakaoLogin = passport.authenticate('kakao', { session: false });
+
+  public kakaoLoginCallback = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    passport.authenticate(
+      'kakao',
+      { session: false, failureRedirect: '/' },
+      (err, user: User) => {
+        const token = generateToken(user.id);
+        res.redirect(`http://localhost:3000/social/token=${token}`);
+      }
+    )(req, res, next);
   };
 }
 

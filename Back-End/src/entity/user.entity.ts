@@ -24,6 +24,12 @@ export class User {
   })
   password: string;
 
+  @Column({
+    nullable: true,
+    default: null,
+  })
+  provider: string;
+
   @OneToMany((type) => Post, (posts) => posts.user, {
     nullable: false,
     onDelete: 'CASCADE',
