@@ -16,7 +16,6 @@ const PostModal = (props) => {
   const [title, setTitle] = useState(null);
   const [description, setDescription] = useState(null);
   const [preview, setPreview] = useState(null);
-  console.log(preview);
 
   //에러 state
   const [urlNull, setUrlNull] = useState(false);

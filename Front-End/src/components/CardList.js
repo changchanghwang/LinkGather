@@ -8,7 +8,6 @@ import Card from './Card';
 const CardList = (props) => {
   //useContext
   const { cards } = useContext(PostContext);
-  console.log(cards);
   return (
     <Grid>
       <TopButton />

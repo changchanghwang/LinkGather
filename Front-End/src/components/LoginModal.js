@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { loginApi } from '../axios/axios';
 import { UserContext } from '../contextAPI/users';
 import CloseButton from '../elements/CloseButton';
+import Kakao from '../elements/Kakao';
 
 const LoginModal = (props) => {
   //modal state
@@ -120,6 +121,7 @@ const LoginModal = (props) => {
               <Button isFill={false} _onClick={login}>
                 로그인
               </Button>
+              <Kakao />
             </>
           </PopUpWrap>
         </GrayBackground>
